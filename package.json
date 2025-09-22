@@ -1,11 +1,10 @@
 {
   "name": "blog",
+  "devDependencies": {
+    "turbo": "^2.5.4"
+  },
+  "packageManager": "bun@1.2.20",
   "private": true,
-  "type": "module",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
@@ -14,9 +13,9 @@
     "dev:web": "turbo -F web dev",
     "dev:server": "turbo -F server dev"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "turbo": "^2.5.4"
-  },
-  "packageManager": "bun@1.2.20"
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }
