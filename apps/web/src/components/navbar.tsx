@@ -7,12 +7,12 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav className="px-3.5 py-2.5 flex justify-between items-center sticky top-0 w-full z-50">
+    <nav className="px-3.5 py-2.5 flex justify-between items-center sticky top-0 w-full z-50 bg-background xl:bg-transparent">
       <a href={"/"}>
         <h1
           className={cn(
             "relative text-foreground ml-7 text-lg flex-1 font-extrabold tracking-tighter cursor-pointer",
-            "before:absolute before:-left-6 before:text-lg before:content-['新'] transition-all duration-150 ",
+            "before:absolute before:-left-6 before:text-lg before:content-['新'] transition-all duration-150",
             "hover:text-foreground/60"
           )}
         >
