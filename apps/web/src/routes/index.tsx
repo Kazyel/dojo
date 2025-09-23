@@ -5,37 +5,21 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import postsJson from "@/lib/content/posts.json";
+import { usePages } from "@/lib/hooks/usePages";
 
 export const Route = createFileRoute("/")({
   component: HomeComponent,
 });
 
-const FETCH_OFFSET = 6;
-
 function HomeComponent() {
-  const [page, setPage] = useState(0);
-
-  const start = useMemo(() => {
-    return page * FETCH_OFFSET;
-  }, [page]);
-
-  const end = useMemo(() => {
-    return start + FETCH_OFFSET;
-  }, [start]);
-
-  const paginatedPosts: Array<Post> = useMemo(() => {
-    return postsJson.slice(start, end);
-  }, [start, end]);
-
-  const nextPage = () => {
-    if (end >= postsJson.length) return;
-    setPage((prev) => prev + 1);
-  };
-
-  const previousPage = () => {
-    if (page === 0) return;
-    setPage((prev) => prev - 1);
-  };
+  const {
+    nextPage,
+    previousPage,
+    isFirstPage,
+    isLastPage,
+    currentPosts,
+    paginatedPosts,
+  } = usePages(postsJson);
 
   if (postsJson.length === 0) {
     return <div>"Error getting the posts.";</div>;
@@ -60,7 +44,7 @@ function HomeComponent() {
           <div className="flex ml-3 gap-x-2">
             <button
               onClick={previousPage}
-              disabled={page === 0}
+              disabled={isFirstPage}
               className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
             >
               <ChevronLeft className="size-6 stroke-3" />
@@ -68,7 +52,7 @@ function HomeComponent() {
 
             <button
               onClick={nextPage}
-              disabled={end >= postsJson.length}
+              disabled={isLastPage}
               className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
             >
               <ChevronRight className="size-6 stroke-3" />
@@ -77,7 +61,7 @@ function HomeComponent() {
         </div>
 
         <p className="text-primary/75 font-light text-lg">
-          {Math.min(postsJson.length, (page + 1) * FETCH_OFFSET)} of {postsJson.length}
+          {currentPosts} of {postsJson.length}
         </p>
       </div>
 
