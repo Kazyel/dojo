@@ -126,6 +126,7 @@ code[data-line-numbers-max-digits="4"] > [data-line]::before {
   --color-off-w: #f3e5d7;
   --color-acc-yellow: #d58430;
   --color-acc-gold: #F0BB78;
+  --color-acc-red: #F35054;
   --color-acc-yellow-2: #f09e46;
   --color-darkest: #1f1a15;
   --font-funnel: "Funnel Display", sans-serif;

@@ -1,25 +1,31 @@
 import type { Post } from "@/lib/types";
+
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { usePages } from "@/lib/hooks/usePages";
+import { PostCard } from "@/components/main/post-card";
+import { PostFilters } from "@/components/main/post-filters";
 
 import postsJson from "@/lib/content/posts.json";
-import { usePages } from "@/lib/hooks/usePages";
 
 export const Route = createFileRoute("/")({
   component: HomeComponent,
 });
 
 function HomeComponent() {
+  const posts = postsJson as unknown as Post[];
+
   const {
     nextPage,
     previousPage,
+    setAppliedFilters,
     isFirstPage,
     isLastPage,
     currentPosts,
     paginatedPosts,
-  } = usePages(postsJson);
+    appliedFilters,
+  } = usePages(posts);
 
   if (postsJson.length === 0) {
     return <div>"Error getting the posts.";</div>;
@@ -66,38 +72,16 @@ function HomeComponent() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative">
-        <article className="flex items-center justify-center gap-4.5 flex-wrap col-span-1 sm:col-span-2 lg:col-span-2">
+        <div className="flex items-center justify-center gap-4.5 flex-wrap col-span-1 sm:col-span-2 lg:col-span-2 lg:justify-start">
           {paginatedPosts.map((post, index) => {
-            return (
-              <Link
-                key={index}
-                to={post.link}
-                className="relative group flex flex-col rounded-xl justify-between bg-foreground px-4 py-5 w-full md:w-[300px] md:h-[350px] hover:bg-foreground/85 transition-colors duration-150"
-              >
-                <div>
-                  <p className="text-3xl font-semibold tracking-tight text-secondary text-balance">
-                    {post.title}
-                  </p>
-                  <span className="text-acc-gold italic font-medium tracking-tight">
-                    {post.postedOn}
-                  </span>
-                </div>
-
-                <p className="text-lg text-secondary/80 tracking-tight line-clamp-1 md:line-clamp-3 text-pretty">
-                  {post.description}
-                </p>
-
-                <span className="right-4.5 rounded-full bg-background p-1.5 absolute">
-                  <ArrowUpRight className="text-foreground size-4.5 stroke-2" />
-                </span>
-              </Link>
-            );
+            return <PostCard post={post} key={index} />;
           })}
-        </article>
+        </div>
 
-        <aside className="top-3 border-l-2 border-foreground px-4 py-2 rounded-sm hidden lg:block lg:sticky lg:col-span-1 max-h-[350px]">
-          <p className="text-foreground text-xl font-bold tracking-tight">Filters</p>
-        </aside>
+        <PostFilters
+          setAppliedFilters={setAppliedFilters}
+          appliedFilters={appliedFilters}
+        />
       </div>
     </main>
   );

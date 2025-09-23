@@ -2,13 +2,14 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { AnimatePresence, motion } from "motion/react";
 import { MoonIcon, SunIcon } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
 
   return (
     <nav className="px-3.5 py-2.5 flex justify-between items-center sticky top-0 w-full z-50 bg-background xl:bg-transparent">
-      <a href={"/"}>
+      <Link to={"/"}>
         <h1
           className={cn(
             "relative text-foreground ml-7 text-lg flex-1 font-extrabold tracking-tighter cursor-pointer",
@@ -18,7 +19,7 @@ export default function Navbar() {
         >
           Kazyel
         </h1>
-      </a>
+      </Link>
 
       <button onClick={() => setTheme((prev) => (prev === "light" ? "dark" : "light"))}>
         <AnimatePresence mode="wait">

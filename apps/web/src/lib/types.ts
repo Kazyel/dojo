@@ -3,4 +3,5 @@ export type Post = {
   description: string;
   link: string;
   postedOn: string;
+  tags: string[];
 };
