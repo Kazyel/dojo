@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
 
 export type Tags = typeof TAGS;
 
@@ -26,13 +27,19 @@ export function PostFilters({ setAppliedFilters, appliedFilters }: PostFiltersPr
                 );
               }}
               className={cn(
-                "shrink-0 px-2 py-1 italic font-mono bg-acc-gold/50 rounded border border-acc-gold/75 cursor-pointer hover:bg-acc-gold/25 transition-all duration-100",
+                "relative shrink-0 px-2 py-1 italic font-mono bg-acc-gold/35 tracking-tight rounded border border-acc-gold/75 cursor-pointer hover:bg-acc-gold/25 transition-all duration-100",
 
                 appliedFilters.includes(tag) &&
                   "text-acc-red font-medium bg-acc-red/15 border-acc-red/50 hover:bg-acc-red/10"
               )}
             >
               {tag}
+
+              {appliedFilters.includes(tag) && (
+                <div className="absolute -top-1.5 -right-1.5 p-[1px] bg-white rounded-full border border-acc-red">
+                  <X className="size-2.5" />
+                </div>
+              )}
             </button>
           );
         })}
