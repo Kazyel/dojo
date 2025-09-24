@@ -3,11 +3,11 @@ import type { Post } from "@/lib/types";
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { usePages } from "@/lib/hooks/usePages";
+import usePosts from "@/lib/hooks/use-posts";
+import postsJson from "@/lib/content/posts.json";
+
 import { PostCard } from "@/components/posts/post-card";
 import { PostFilters } from "@/components/posts/post-filters";
-
-import postsJson from "@/lib/content/posts.json";
 
 export const Route = createFileRoute("/")({
   component: HomeComponent,
@@ -19,14 +19,14 @@ function HomeComponent() {
   const {
     nextPage,
     previousPage,
-    setAppliedFilters,
+    setFilters,
     isFirstPage,
     isLastPage,
     currentPosts,
     availablePosts,
     paginatedPosts,
-    appliedFilters,
-  } = usePages(posts);
+    filters,
+  } = usePosts(posts);
 
   if (postsJson.length === 0) {
     return (
@@ -83,10 +83,7 @@ function HomeComponent() {
           })}
         </div>
 
-        <PostFilters
-          setAppliedFilters={setAppliedFilters}
-          appliedFilters={appliedFilters}
-        />
+        <PostFilters setFilters={setFilters} filters={filters} />
       </div>
     </main>
   );

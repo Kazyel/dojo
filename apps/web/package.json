@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3001",
+    "test": "vitest",
     "build": "vite build",
     "serve": "vite preview",
     "start": "vite",
@@ -39,15 +40,20 @@
     "@tanstack/react-query-devtools": "^5.85.5",
     "@tanstack/react-router-devtools": "^1.114.27",
     "@tanstack/router-plugin": "^1.114.27",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/mdx": "^2.0.13",
     "@types/node": "^22.13.13",
     "@types/react": "~19.1.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^27.0.0",
     "postcss": "^8.5.3",
     "shiki": "^3.13.0",
     "tailwindcss": "^4.0.15",
     "typescript": "^5.8.3",
-    "vite": "^6.2.2"
+    "vite": "^6.2.2",
+    "vitest": "^3.2.4"
   }
 }

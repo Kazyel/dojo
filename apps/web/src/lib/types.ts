@@ -4,6 +4,6 @@ export type Post = {
   title: string;
   description: string;
   link: string;
-  postedOn: string;
+  year: string;
   tags: Tags[];
 };

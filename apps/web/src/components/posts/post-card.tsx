@@ -22,7 +22,7 @@ export function PostCard({ post }: PostCardProps) {
             </span>
           </div>
           <span className="text-acc-red italic font-extrabold tracking-tight">
-            {post.postedOn}
+            {post.year}
           </span>
         </div>
 
