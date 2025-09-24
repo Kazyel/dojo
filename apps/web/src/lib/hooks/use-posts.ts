@@ -1,29 +1,32 @@
 import type { Tags, Years } from "@/components/posts/post-filters";
 import type { Post } from "../types";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 
 export type Filters = {
   tags: Tags;
-  year: Years[number] | "";
+  year: Years[number] | null;
+};
+
+type InitialProps = {
+  page?: number;
+  tags?: Tags;
+  year?: Years[number] | null;
 };
 
 const FETCH_OFFSET = 6;
 
-export default function usePosts(postsJson: Post[]) {
-  const [page, setPage] = useState(0);
+export default function usePosts(
+  postsJson: Post[],
+  options?: {
+    initialProps?: InitialProps;
+  }
+) {
+  const [page, setPage] = useState(options?.initialProps?.page ?? 0);
 
   const [filters, setFilters] = useState<Filters>({
-    tags: [],
-    year: "",
+    tags: options?.initialProps?.tags ?? [],
+    year: options?.initialProps?.year ?? null,
   });
-
-  const start = useMemo(() => {
-    return page * FETCH_OFFSET;
-  }, [page]);
-
-  const end = useMemo(() => {
-    return start + FETCH_OFFSET;
-  }, [start]);
 
   const availablePosts = useMemo(() => {
     return postsJson.filter((post) => {
@@ -31,47 +34,69 @@ export default function usePosts(postsJson: Post[]) {
         filters.tags.length === 0 ||
         filters.tags.every((tag) => post.tags.includes(tag as any));
 
-      const matchesYear = filters.year === "" || post.year === filters.year;
+      const matchesYear = filters.year === null || post.year === filters.year;
 
       return matchesTags && matchesYear;
     }).length;
   }, [filters, postsJson]);
 
+  const totalPages = Math.max(1, Math.ceil(availablePosts / FETCH_OFFSET));
+  const lastPage = Math.max(0, totalPages - 1);
+
+  // const updateSearchPage = (page: number) => {
+  //   const newURL = new URL(window.location.href);
+
+  //   if (page === 0) {
+  //     newURL.searchParams.delete("page");
+  //     window.history.replaceState({}, "", newURL.toString());
+  //     return;
+  //   }
+
+  //   newURL.searchParams.set("page", String(page));
+  //   window.history.replaceState({}, "", newURL.toString());
+  // };
+
+  // if (page > lastPage) {
+  //   updateSearchPage(lastPage);
+  // }
+
+  // if (page < 0) {
+  //   updateSearchPage(0);
+  // }
+
+  const effectivePage = Math.min(page, lastPage);
+
   const nextPage = () => {
-    if (end >= availablePosts) return;
-    setPage((prev) => prev + 1);
+    if (effectivePage >= lastPage) return;
+    setPage((prev) => Math.min(prev + 1, lastPage));
   };
 
   const previousPage = () => {
-    if (page === 0) return;
-    setPage((prev) => prev - 1);
+    if (effectivePage === 0) return;
+    setPage((prev) => Math.max(prev - 1, 0));
   };
 
-  const isFirstPage = page === 0;
-  const isLastPage = end >= availablePosts;
-
-  useEffect(() => {
-    const lastPage = Math.max(0, Math.ceil(availablePosts / FETCH_OFFSET) - 1);
-    if (page > lastPage) {
-      setPage(lastPage);
-    }
-  }, [availablePosts, page]);
+  const isFirstPage = effectivePage === 0;
+  const isLastPage = effectivePage >= lastPage;
 
   const paginatedPosts: Array<Post> = useMemo(() => {
+    const effStart = effectivePage * FETCH_OFFSET;
+    const effEnd = effStart + FETCH_OFFSET;
+
     return postsJson
       .filter((post) => {
         const matchesTags =
           filters.tags.length === 0 ||
           filters.tags.every((tag) => post.tags.includes(tag as any));
 
-        const matchesYear = filters.year === "" || post.year === filters.year;
+        const matchesYear = filters.year === null || post.year === filters.year;
 
         return matchesTags && matchesYear;
       })
-      .slice(start, end);
-  }, [start, end, postsJson, filters]);
+      .slice(effStart, effEnd);
+  }, [effectivePage, postsJson, filters]);
 
-  const currentPosts = Math.min(availablePosts, (page + 1) * FETCH_OFFSET);
+  const currentPosts = Math.min(availablePosts, (effectivePage + 1) * FETCH_OFFSET);
 
   return {
     nextPage,

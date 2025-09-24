@@ -19,7 +19,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
     meta: [
       {
-        title: "blog",
+        title: "Dojo",
       },
       {
         name: "description",
@@ -36,10 +36,6 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 });
 
 function RootComponent() {
-  const isFetching = useRouterState({
-    select: (s) => s.isLoading,
-  });
-
   return (
     <>
       <HeadContent />
@@ -50,7 +46,7 @@ function RootComponent() {
         storageKey="vite-ui-theme"
       >
         <Navbar />
-        {isFetching ? <Loader /> : <Outlet />}
+        <Outlet />
 
         <Toaster richColors />
       </ThemeProvider>

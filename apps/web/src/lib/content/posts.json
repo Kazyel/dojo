@@ -3,84 +3,77 @@
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding", "Thoughts"]
+    "year": 2025,
+    "tags": ["coding", "thoughts"]
   },
   {
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding", "Thoughts"]
+    "year": 2025,
+    "tags": ["coding", "thoughts"]
   },
   {
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding", "Thoughts", "Random talk", "Review", "Tips"]
+    "year": 2025,
+    "tags": ["coding", "thoughts"]
   },
   {
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding"]
+    "year": 2025,
+    "tags": ["coding", "thoughts"]
   },
   {
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding"]
+    "year": 2025,
+    "tags": ["coding", "thoughts"]
   },
   {
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding"]
+    "year": 2025,
+    "tags": ["coding", "thoughts", "random talk", "tips"]
   },
   {
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding"]
+    "year": 2025,
+    "tags": ["coding", "thoughts"]
   },
   {
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding"]
+    "year": 2025,
+    "tags": ["coding", "thoughts"]
   },
   {
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding"]
+    "year": 2025,
+    "tags": ["coding", "thoughts"]
   },
   {
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding"]
+    "year": 2025,
+    "tags": ["coding", "random talk", "tipos"]
   },
   {
     "title": "Handling MDX with Vite First",
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
     "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding"]
-  },
-  {
-    "title": "Handling MDX with Vite First",
-    "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-    "link": "/teste",
-    "year": "2025",
-    "tags": ["Coding"]
+    "year": 2025,
+    "tags": ["coding", "thoughts"]
   }
 ]

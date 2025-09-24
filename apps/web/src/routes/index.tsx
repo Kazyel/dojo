@@ -1,34 +1,57 @@
 import type { Post } from "@/lib/types";
 
 import { createFileRoute } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import usePosts from "@/lib/hooks/use-posts";
 import postsJson from "@/lib/content/posts.json";
+import { sanitizeInitialTags } from "@/lib/utils";
 
 import { PostCard } from "@/components/posts/post-card";
-import { PostFilters } from "@/components/posts/post-filters";
+import { PostFilters, type Years } from "@/components/posts/post-filters";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+type PageSearch = {
+  page?: number;
+  tags?: string;
+  year?: number;
+};
 
 export const Route = createFileRoute("/")({
   component: HomeComponent,
+  validateSearch: (search: Record<string, unknown>): PageSearch => {
+    return {
+      page: !search?.page ? undefined : Number(search?.page),
+      tags: !search?.tags ? undefined : String(search?.tags),
+      year: !search?.year ? undefined : Number(search?.year),
+    };
+  },
 });
 
 function HomeComponent() {
+  const navigate = Route.useNavigate();
+  const { page, tags, year } = Route.useSearch();
+
   const posts = postsJson as unknown as Post[];
 
   const {
     nextPage,
     previousPage,
     setFilters,
+    filters,
     isFirstPage,
     isLastPage,
     currentPosts,
     availablePosts,
     paginatedPosts,
-    filters,
-  } = usePosts(posts);
+  } = usePosts(posts, {
+    initialProps: {
+      page: page ?? 0,
+      tags: tags ? sanitizeInitialTags(tags) : [],
+      year: year ? (year as Years[number]) : null,
+    },
+  });
 
-  if (postsJson.length === 0) {
+  if (posts.length === 0) {
     return (
       <div className="flex items-center justify-center w-full min-h-screen px-8 py-6 text-center text-acc-red font-semibold text-lg">
         Error getting the posts.
@@ -54,7 +77,13 @@ function HomeComponent() {
 
           <div className="flex ml-3 gap-x-2">
             <button
-              onClick={previousPage}
+              onClick={() => {
+                navigate({
+                  search: { page: Math.max(0, (page ?? 0) - 1), tags, year },
+                  replace: true,
+                });
+                previousPage();
+              }}
               disabled={isFirstPage}
               className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
             >
@@ -62,7 +91,13 @@ function HomeComponent() {
             </button>
 
             <button
-              onClick={nextPage}
+              onClick={() => {
+                navigate({
+                  search: { page: Math.max(0, (page ?? 0) + 1), tags, year },
+                  replace: true,
+                });
+                nextPage();
+              }}
               disabled={isLastPage}
               className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
             >
