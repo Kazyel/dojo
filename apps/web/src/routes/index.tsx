@@ -4,8 +4,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { usePages } from "@/lib/hooks/usePages";
-import { PostCard } from "@/components/main/post-card";
-import { PostFilters } from "@/components/main/post-filters";
+import { PostCard } from "@/components/posts/post-card";
+import { PostFilters } from "@/components/posts/post-filters";
 
 import postsJson from "@/lib/content/posts.json";
 
@@ -23,17 +23,22 @@ function HomeComponent() {
     isFirstPage,
     isLastPage,
     currentPosts,
+    availablePosts,
     paginatedPosts,
     appliedFilters,
   } = usePages(posts);
 
   if (postsJson.length === 0) {
-    return <div>"Error getting the posts.";</div>;
+    return (
+      <div className="flex items-center justify-center w-full min-h-screen px-8 py-6 text-center text-acc-red font-semibold text-lg">
+        Error getting the posts.
+      </div>
+    );
   }
 
   return (
     <main className="container mx-auto max-w-5xl px-8 py-6">
-      <div className="mb-6 mt-12">
+      <div className="mb-5 mt-12">
         <h1 className="font-extrabold tracking-tighter text-7xl mb-3">Kazyel's Dojo</h1>
 
         <p className="text-lg text-muted-foreground text-pretty">
@@ -67,7 +72,7 @@ function HomeComponent() {
         </div>
 
         <p className="text-primary/75 font-light text-lg">
-          {currentPosts} of {postsJson.length}
+          {currentPosts} of {availablePosts} posts
         </p>
       </div>
 

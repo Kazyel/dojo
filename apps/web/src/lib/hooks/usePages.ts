@@ -1,4 +1,4 @@
-import type { Tags } from "@/components/main/post-filters";
+import type { Tags } from "@/components/posts/post-filters";
 import type { Post } from "../types";
 import { useMemo, useState } from "react";
 
@@ -7,8 +7,6 @@ const FETCH_OFFSET = 6;
 export function usePages(postsJson: Post[]) {
   const [page, setPage] = useState(0);
   const [appliedFilters, setAppliedFilters] = useState<Tags>([]);
-
-  console.log(appliedFilters);
 
   const start = useMemo(() => {
     return page * FETCH_OFFSET;
@@ -20,7 +18,15 @@ export function usePages(postsJson: Post[]) {
 
   const isFirstPage = page === 0;
   const isLastPage = end >= postsJson.length;
-  const currentPosts = Math.min(postsJson.length, (page + 1) * FETCH_OFFSET);
+
+  const availablePosts =
+    appliedFilters.length === 0
+      ? postsJson.length
+      : postsJson.filter((post) => {
+          return appliedFilters.every((filter) => post.tags.includes(filter as any));
+        }).length;
+
+  const currentPosts = Math.min(availablePosts, (page + 1) * FETCH_OFFSET);
 
   const nextPage = () => {
     if (end >= postsJson.length) return;
@@ -36,7 +42,7 @@ export function usePages(postsJson: Post[]) {
     return postsJson
       .filter((post) => {
         if (appliedFilters.length === 0) return true;
-        return appliedFilters.every((filter) => post.tags.includes(filter));
+        return appliedFilters.every((filter) => post.tags.includes(filter as any));
       })
       .slice(start, end);
   }, [start, end, postsJson, appliedFilters]);
@@ -48,6 +54,7 @@ export function usePages(postsJson: Post[]) {
     isFirstPage,
     isLastPage,
     currentPosts,
+    availablePosts,
     paginatedPosts,
     appliedFilters,
   };
