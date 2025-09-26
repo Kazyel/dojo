@@ -1,4 +1,4 @@
-import type { Tags } from "@/components/posts/post-filters";
+import type { Tags, Years } from "@/components/posts/post-filters";
 import type { UseNavigateResult } from "@tanstack/react-router";
 
 export type SearchProps = {
@@ -6,7 +6,10 @@ export type SearchProps = {
     action: "add" | "filter" | "remove";
     tag?: Tags[number];
   };
-  year?: "remove" | null | number;
+  yearOptions?: {
+    action: "remove" | "add";
+    year?: Years[number];
+  };
   navigate: UseNavigateResult<"/">;
 };
 
@@ -31,31 +34,34 @@ export const oldURLParser = (
 ) => {
   const next: Record<string, any> = { ...old };
 
-  if (searchProps.tagOptions?.action === "add") {
-    if (old.tags) {
-      next.tags = [...old.tags.split(","), searchProps.tagOptions.tag].join(",");
-    } else {
-      next.tags = searchProps.tagOptions.tag;
-    }
+  switch (searchProps.tagOptions?.action) {
+    case "add":
+      if (old.tags) {
+        next.tags = [...old.tags.split(","), searchProps.tagOptions.tag].join(",");
+      } else {
+        next.tags = searchProps.tagOptions.tag;
+      }
+      break;
+    case "filter":
+      next.tags = old
+        .tags!.split(",")
+        .filter((t) => t !== searchProps.tagOptions?.tag)
+        .join(",");
+      break;
+    case "remove":
+      delete next.tags;
+      break;
+    default:
+      break;
   }
 
-  if (searchProps.tagOptions?.action === "filter") {
-    next.tags = old
-      .tags!.split(",")
-      .filter((t) => t !== searchProps.tagOptions?.tag)
-      .join(",");
-  }
-
-  if (searchProps.tagOptions?.action === "remove") {
-    delete next.tags;
-  }
-
-  if (typeof searchProps.year === "number") {
-    next.year = searchProps.year;
-  }
-
-  if (searchProps.year === "remove") {
-    delete next.year;
+  switch (searchProps.yearOptions?.action) {
+    case "add":
+      next.year = searchProps.yearOptions.year;
+      break;
+    case "remove":
+      delete next.year;
+      break;
   }
 
   return next;

@@ -9,7 +9,7 @@ export default function Navbar() {
 
   return (
     <nav className="px-3.5 py-2.5 flex justify-between items-center sticky top-0 w-full z-50 bg-background xl:bg-transparent">
-      <Link to={"/"}>
+      <Link to={"/"} viewTransition={{ types: ["fade"] }}>
         <h1
           className={cn(
             "relative text-foreground ml-7 text-lg flex-1 font-extrabold tracking-tighter cursor-pointer",

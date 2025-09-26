@@ -1,10 +1,14 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { Filters } from "@/lib/hooks/use-posts";
 
-import { cn } from "@/lib/utils";
-import { syncFiltersWithURL } from "@/lib/utils/url-sync";
-import { ListFilter, X } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
+import { syncFiltersWithURL } from "@/lib/utils/url-sync";
+
+import { Calendar, ListFilter, Tags } from "lucide-react";
+import { PostTag } from "./post-tags";
+
+export type Tags = (typeof TAGS)[number][];
+export type Years = (typeof YEARS)[number][];
 
 interface PostFiltersProps {
   filters: Filters;
@@ -13,9 +17,6 @@ interface PostFiltersProps {
 
 const TAGS = ["coding", "random talk", "tips", "review", "thoughts"] as const;
 const YEARS = [2025] as const;
-
-export type Tags = (typeof TAGS)[number][];
-export type Years = (typeof YEARS)[number][];
 
 export function PostFilters({ setFilters, filters }: PostFiltersProps) {
   const navigate = useNavigate({ from: "/" });
@@ -63,9 +64,14 @@ export function PostFilters({ setFilters, filters }: PostFiltersProps) {
     });
   };
 
-  const handleYearFilter = (year: Years[number] | null) => {
+  const handleYearFilter = (year: Years[number]) => {
     if (filters.year === year) {
-      syncFiltersWithURL({ year: "remove", navigate });
+      syncFiltersWithURL({
+        yearOptions: {
+          action: "remove",
+        },
+        navigate,
+      });
 
       setFilters((prev) => ({
         ...prev,
@@ -74,74 +80,63 @@ export function PostFilters({ setFilters, filters }: PostFiltersProps) {
       return;
     }
 
-    syncFiltersWithURL({ year, navigate });
-    setFilters((prev) => ({
-      ...prev,
-      year,
-    }));
+    if (year) {
+      syncFiltersWithURL({
+        yearOptions: {
+          action: "add",
+          year,
+        },
+        navigate,
+      });
+
+      setFilters((prev) => ({
+        ...prev,
+        year,
+      }));
+    }
   };
 
   return (
     <aside className="top-3 border-l-2 border-foreground px-4 pt-2 pb-4 rounded-sm hidden gap-y-3 lg:flex lg:flex-col lg:sticky lg:col-span-1 max-h-fit">
       <div className="flex items-center gap-x-2">
         <ListFilter className="size-6" />
-        <p className="text-foreground text-2xl font-bold tracking-tight">Filters</p>
+        <h2 className="text-foreground text-2xl font-bold tracking-tight">Filters</h2>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <p className="w-full text-lg tracking-tighter underline">Tags:</p>
+        <div className="w-full flex items-center gap-x-2">
+          <Tags className="size-4.5 text-acc-red" />
+          <h3 className="text-lg tracking-tighter">Tags</h3>
+        </div>
 
         {TAGS.map((tag) => {
           return (
-            <button
+            <PostTag
               key={tag}
-              className={cn(
-                "relative shrink-0 px-2 py-1 italic font-mono bg-acc-gold/35 tracking-tight rounded border border-acc-gold/75 cursor-pointer hover:bg-acc-gold/25 transition-all duration-100",
-
-                filters.tags.includes(tag) &&
-                  "text-acc-red font-medium bg-acc-red/15 border-acc-red/50 hover:bg-acc-red/10"
-              )}
-              onClick={() => {
-                handleTagFilter(tag);
-              }}
-            >
-              {tag}
-
-              {filters.tags.includes(tag) && (
-                <div className="absolute -top-1.5 -right-1.5 p-[1px] bg-off-w rounded-full border border-acc-red">
-                  <X className="size-2.5" />
-                </div>
-              )}
-            </button>
+              type="tag"
+              tag={tag}
+              filters={filters}
+              handleFilter={handleTagFilter}
+            />
           );
         })}
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <p className="w-full text-lg tracking-tighter underline">Years:</p>
+        <div className="w-full flex items-center gap-x-2">
+          <Calendar className="size-4.5 text-acc-red" />
+          <h3 className="text-lg tracking-tighter underline">Years</h3>
+        </div>
 
         {YEARS.map((year) => {
           return (
-            <button
+            <PostTag
               key={year}
-              className={cn(
-                "relative shrink-0 px-2 py-1 italic font-mono bg-acc-gold/35 tracking-tight rounded border border-acc-gold/75 cursor-pointer hover:bg-acc-gold/25 transition-all duration-100",
-
-                filters.year === year &&
-                  "text-acc-red font-medium bg-acc-red/15 border-acc-red/50 hover:bg-acc-red/10"
-              )}
-              onClick={() => {
-                handleYearFilter(year);
-              }}
-            >
-              {year}
-
-              {filters.year === year && (
-                <div className="absolute -top-1.5 -right-1.5 p-[1px] bg-off-w rounded-full border border-acc-red">
-                  <X className="size-2.5" />
-                </div>
-              )}
-            </button>
+              type="year"
+              tag={year}
+              filters={filters}
+              handleFilter={handleYearFilter}
+            />
           );
         })}
       </div>
