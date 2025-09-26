@@ -1,7 +1,8 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { Filters } from "@/lib/hooks/use-posts";
 
-import { cn, syncFiltersWithURL } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { syncFiltersWithURL } from "@/lib/utils/url-sync";
 import { ListFilter, X } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -21,37 +22,45 @@ export function PostFilters({ setFilters, filters }: PostFiltersProps) {
 
   const handleTagFilter = (tag: Tags[number]) => {
     if (filters.tags.includes(tag)) {
-      const filteredTags = filters.tags.filter((t) => t !== tag);
-
-      if (filteredTags.length === 0) {
-        syncFiltersWithURL({ tags: "remove", navigate });
-      } else {
-        syncFiltersWithURL({
-          tags: (old) =>
-            old!
-              .split(",")
-              .filter((t) => t !== tag)
-              .join(","),
-          navigate,
-        });
-      }
+      const filteredTags: Tags[number][] = filters.tags.filter((t) => t !== tag);
 
       setFilters((prev) => ({
         ...prev,
-        tags: prev.tags.filter((t) => t !== tag),
+        tags: filteredTags,
       }));
+
+      if (filteredTags.length === 0) {
+        syncFiltersWithURL({
+          tagOptions: {
+            action: "remove",
+          },
+          navigate,
+        });
+        return;
+      }
+
+      syncFiltersWithURL({
+        tagOptions: {
+          action: "filter",
+          tag,
+        },
+        navigate,
+      });
       return;
     }
-
-    syncFiltersWithURL({
-      tags: (old) => (old ? [...old.split(","), tag].join(",") : tag),
-      navigate,
-    });
 
     setFilters((prev) => ({
       ...prev,
       tags: [...prev.tags, tag],
     }));
+
+    syncFiltersWithURL({
+      tagOptions: {
+        action: "add",
+        tag,
+      },
+      navigate,
+    });
   };
 
   const handleYearFilter = (year: Years[number] | null) => {

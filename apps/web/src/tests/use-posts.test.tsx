@@ -5,7 +5,7 @@ import { expect, test } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import usePosts from "@/lib/hooks/use-posts";
 
-const makePosts = (count: number, year = "2025"): Post[] =>
+const makePosts = (count: number, year = 2025): Post[] =>
   Array.from({ length: count }).map((_, i) => ({
     title: `p${i}`,
     description: "desc",
@@ -13,8 +13,8 @@ const makePosts = (count: number, year = "2025"): Post[] =>
     year: year,
     tags:
       i % 2 === 0
-        ? (["Coding"] as unknown as Tags[])
-        : (["Thoughts"] as unknown as Tags[]),
+        ? (["coding"] as unknown as Tags[])
+        : (["thoughts"] as unknown as Tags[]),
   }));
 
 test("pagination and counts work with default filters", () => {
@@ -26,7 +26,7 @@ test("pagination and counts work with default filters", () => {
 });
 
 test("year filter returns only matching posts and clamps page", () => {
-  const posts = [...makePosts(3, "2025"), ...makePosts(6, "2024")];
+  const posts = [...makePosts(3, 2025), ...makePosts(6, 2024)];
   const { result } = renderHook(() => usePosts(posts as Post[]));
 
   act(() => {
@@ -34,11 +34,11 @@ test("year filter returns only matching posts and clamps page", () => {
   });
 
   act(() => {
-    result.current.setFilters({ tags: [], year: "2025" });
+    result.current.setFilters({ tags: [], year: 2025 });
   });
 
   expect(result.current.availablePosts).toBe(3);
-  expect(result.current.paginatedPosts.every((p) => p.year === "2025")).toBe(true);
+  expect(result.current.paginatedPosts.every((p) => p.year === 2025)).toBe(true);
   expect(result.current.isFirstPage).toBe(true);
 });
 
@@ -51,29 +51,29 @@ test("tag filter returns only matching posts and clamps page", () => {
   });
 
   act(() => {
-    result.current.setFilters({ tags: ["Coding"], year: "" });
+    result.current.setFilters({ tags: ["coding"], year: null });
   });
 
   expect(result.current.availablePosts).toBe(5);
   expect(
-    result.current.paginatedPosts.every((p) => p.tags.includes("Coding" as any))
+    result.current.paginatedPosts.every((p) => p.tags.includes("coding" as any))
   ).toBe(true);
   expect(result.current.isFirstPage).toBe(true);
 });
 
 test("combined filters return only matching posts", () => {
-  const posts = [...makePosts(3, "2025"), ...makePosts(6, "2024")];
+  const posts = [...makePosts(3, 2025), ...makePosts(6, 2024)];
   const { result } = renderHook(() => usePosts(posts as Post[]));
 
   act(() => {
-    // @ts-ignore
-    result.current.setFilters({ tags: ["Coding"], year: "2024" });
+    result.current.setFilters({ tags: ["coding"], year: 2024 as any });
   });
 
   expect(result.current.availablePosts).toBe(3);
+
   expect(
     result.current.paginatedPosts.every(
-      (p) => p.tags.includes("Coding" as any) && p.year === "2024"
+      (p) => p.tags.includes("coding" as any) && p.year === 2024
     )
   ).toBe(true);
 });
