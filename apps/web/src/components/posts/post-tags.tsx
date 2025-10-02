@@ -39,10 +39,10 @@ export function PostTag({ type, tag }: PostTagsProps) {
       )}
       onClick={() => {
         if (isTag) {
-          toggleTag(tag as Tags[number], navigate);
+          toggleTag(tag as Tags[number]);
           return;
         }
-        toggleYear(tag as Years[number], navigate);
+        toggleYear(tag as Years[number]);
       }}
     >
       {tag}

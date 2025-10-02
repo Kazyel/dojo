@@ -1,6 +1,6 @@
 import type { Post } from "@/lib/types";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Route as currentRoute } from "@tanstack/react-router";
 
 import postsJson from "@/lib/content/posts.json";
 import { sanitizeInitialTags } from "@/lib/utils";
@@ -14,6 +14,7 @@ import {
 } from "@/components/posts/post-filters";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { useURLSync } from "@/lib/hooks/use-url-sync";
 
 type PageSearch = {
   page?: number;
@@ -35,6 +36,8 @@ export const Route = createFileRoute("/")({
 function HomeComponent() {
   const { page, tags, year } = Route.useSearch();
   const navigate = Route.useNavigate();
+
+  useURLSync(Route as unknown as currentRoute);
 
   const postsData = useRef(postsJson as unknown as Post[]);
 
@@ -92,13 +95,7 @@ function HomeComponent() {
 
             <div className="flex ml-3 gap-x-2">
               <button
-                onClick={() => {
-                  navigate({
-                    search: { page: Math.max(0, (page ?? 0) - 1), tags, year },
-                    replace: true,
-                  });
-                  previousPage();
-                }}
+                onClick={previousPage}
                 disabled={isFirstPage}
                 className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
               >
@@ -106,13 +103,7 @@ function HomeComponent() {
               </button>
 
               <button
-                onClick={() => {
-                  navigate({
-                    search: { page: Math.max(0, (page ?? 0) + 1), tags, year },
-                    replace: true,
-                  });
-                  nextPage();
-                }}
+                onClick={nextPage}
                 disabled={isLastPage}
                 className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
               >
