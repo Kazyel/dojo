@@ -1,5 +1,7 @@
-import { cn } from "@/lib/utils";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
+
 import { AnimatePresence, motion } from "motion/react";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
@@ -7,13 +9,49 @@ import { Link } from "@tanstack/react-router";
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
 
+  const [showNavbar, setShowNavbar] = useState(true);
+  const navRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!navRef.current) return;
+    let lastScroll = 0;
+    let ticking = false;
+
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (currentScroll > lastScroll) {
+            setShowNavbar(false);
+          } else {
+            setShowNavbar(true);
+          }
+
+          lastScroll = currentScroll;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="px-3.5 py-2.5 flex justify-between items-center sticky top-0 w-full z-50 bg-background xl:bg-transparent">
+    <nav
+      ref={navRef}
+      className={cn(
+        "px-3.5 py-4 flex justify-between items-center w-full sticky top-0 z-50 bg-background max-w-6xl mx-auto transition-all duration-250",
+        showNavbar ? "translate-y-0" : "translate-y-[-100%]"
+      )}
+    >
       <Link to={"/"} viewTransition={{ types: ["fade"] }}>
         <h1
           className={cn(
-            "relative text-foreground ml-7 text-lg flex-1 font-extrabold tracking-tighter cursor-pointer",
-            "before:absolute before:-left-6 before:text-lg before:content-['新'] transition-all duration-150",
+            "relative text-foreground ml-7 flex-1 font-extrabold tracking-tighter cursor-pointer font-unbounded border-l pl-2",
+            "before:absolute before:-left-6 before:text-base before:content-['新'] transition-all duration-150",
             "hover:text-foreground/60"
           )}
         >
@@ -21,7 +59,11 @@ export default function Navbar() {
         </h1>
       </Link>
 
-      <button onClick={() => setTheme((prev) => (prev === "light" ? "dark" : "light"))}>
+      <button
+        onClick={() =>
+          setTheme((prev) => (prev === "light" ? "dark" : "light"))
+        }
+      >
         <AnimatePresence mode="wait">
           <motion.span
             key={theme === "dark" ? "dark" : "light"}

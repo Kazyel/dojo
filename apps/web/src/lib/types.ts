@@ -5,5 +5,5 @@ export type Post = {
   description: string;
   link: string;
   year: number;
-  tags: Tags[];
+  tags: Tags[number][];
 };

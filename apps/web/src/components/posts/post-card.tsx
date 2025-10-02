@@ -30,7 +30,8 @@ export function PostCard({ post, index }: PostCardProps) {
               <ArrowUpRight className="text-foreground size-4.5 stroke-2" />
             </span>
           </div>
-          <span className="text-acc-red italic font-extrabold tracking-tight">
+
+          <span className="text-acc-red italic font-bold text-xs font-unbounded">
             {post.year}
           </span>
         </div>

@@ -1,143 +1,63 @@
-import type { Dispatch, SetStateAction } from "react";
-import type { Filters } from "@/lib/hooks/use-posts";
+import { usePostsStore } from "@/lib/store/use-posts-store";
 
-import { useNavigate } from "@tanstack/react-router";
-import { syncFiltersWithURL } from "@/lib/utils/url-sync";
-
-import { Calendar, ListFilter, Tags } from "lucide-react";
-import { PostTag } from "./post-tags";
+import { PostTag } from "@/components/posts/post-tags";
+import { Calendar, ListFilterPlus, Tags } from "lucide-react";
 
 export type Tags = (typeof TAGS)[number][];
 export type Years = (typeof YEARS)[number][];
 
-interface PostFiltersProps {
-  filters: Filters;
-  setFilters: Dispatch<SetStateAction<Filters>>;
-}
-
 const TAGS = ["coding", "random talk", "tips", "review", "thoughts"] as const;
 const YEARS = [2025] as const;
 
-export function PostFilters({ setFilters, filters }: PostFiltersProps) {
-  const navigate = useNavigate({ from: "/" });
-
-  const handleTagFilter = (tag: Tags[number]) => {
-    if (filters.tags.includes(tag)) {
-      const filteredTags: Tags[number][] = filters.tags.filter((t) => t !== tag);
-
-      setFilters((prev) => ({
-        ...prev,
-        tags: filteredTags,
-      }));
-
-      if (filteredTags.length === 0) {
-        syncFiltersWithURL({
-          tagOptions: {
-            action: "remove",
-          },
-          navigate,
-        });
-        return;
-      }
-
-      syncFiltersWithURL({
-        tagOptions: {
-          action: "filter",
-          tag,
-        },
-        navigate,
-      });
-      return;
-    }
-
-    setFilters((prev) => ({
-      ...prev,
-      tags: [...prev.tags, tag],
-    }));
-
-    syncFiltersWithURL({
-      tagOptions: {
-        action: "add",
-        tag,
-      },
-      navigate,
-    });
-  };
-
-  const handleYearFilter = (year: Years[number]) => {
-    if (filters.year === year) {
-      syncFiltersWithURL({
-        yearOptions: {
-          action: "remove",
-        },
-        navigate,
-      });
-
-      setFilters((prev) => ({
-        ...prev,
-        year: null,
-      }));
-      return;
-    }
-
-    if (year) {
-      syncFiltersWithURL({
-        yearOptions: {
-          action: "add",
-          year,
-        },
-        navigate,
-      });
-
-      setFilters((prev) => ({
-        ...prev,
-        year,
-      }));
-    }
-  };
+export function PostFilters() {
+  const { filters, resetFilters } = usePostsStore();
 
   return (
-    <aside className="top-3 border-l-2 border-foreground px-4 pt-2 pb-4 rounded-sm hidden gap-y-3 lg:flex lg:flex-col lg:sticky lg:col-span-1 max-h-fit">
-      <div className="flex items-center gap-x-2">
-        <ListFilter className="size-6" />
-        <h2 className="text-foreground text-2xl font-bold tracking-tight">Filters</h2>
+    <aside className="top-3 border-l border-foreground/65 px-4 pt-2 pb-4 rounded-sm hidden lg:flex lg:flex-col lg:sticky lg:col-span-1 h-fit">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-x-1.5">
+          <ListFilterPlus className="size-6 text-foreground" />
+
+          <h2 className="text-foreground text-2xl font-extrabold tracking-tight font-unbounded">
+            Filters
+          </h2>
+        </div>
+
+        {(filters.tags.size > 0 || filters.year) && (
+          <button
+            onClick={resetFilters}
+            className="text-xs border border-acc-red/50 text-primary font-mono font-extrabold cursor-pointer transition-all duration-200 hover:bg-acc-red bg-acc-red/10 px-1.5 py-0.5 rounded-sm"
+          >
+            Reset
+          </button>
+        )}
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 mb-5">
         <div className="w-full flex items-center gap-x-2">
-          <Tags className="size-4.5 text-acc-red" />
-          <h3 className="text-lg tracking-tighter">Tags</h3>
+          <Tags className="size-5 text-acc-red" />
+
+          <h3 className="font-semibold font-unbounded text-foreground/85">
+            Tags
+          </h3>
         </div>
 
         {TAGS.map((tag) => {
-          return (
-            <PostTag
-              key={tag}
-              type="tag"
-              tag={tag}
-              filters={filters}
-              handleFilter={handleTagFilter}
-            />
-          );
+          return <PostTag key={tag} type="tag" tag={tag} />;
         })}
       </div>
 
       <div className="flex flex-wrap gap-2">
         <div className="w-full flex items-center gap-x-2">
-          <Calendar className="size-4.5 text-acc-red" />
-          <h3 className="text-lg tracking-tighter underline">Years</h3>
+          <Calendar className="size-5 text-acc-red" />
+
+          <h3 className="font-semibold font-unbounded text-foreground/85">
+            Years
+          </h3>
         </div>
 
         {YEARS.map((year) => {
-          return (
-            <PostTag
-              key={year}
-              type="year"
-              tag={year}
-              filters={filters}
-              handleFilter={handleYearFilter}
-            />
-          );
+          return <PostTag key={year} type="year" tag={year} />;
         })}
       </div>
     </aside>

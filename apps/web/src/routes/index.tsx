@@ -2,13 +2,18 @@ import type { Post } from "@/lib/types";
 
 import { createFileRoute } from "@tanstack/react-router";
 
-import usePosts from "@/lib/hooks/use-posts";
 import postsJson from "@/lib/content/posts.json";
 import { sanitizeInitialTags } from "@/lib/utils";
+import { usePostsStore } from "@/lib/store/use-posts-store";
 
 import { PostCard } from "@/components/posts/post-card";
-import { PostFilters, type Years } from "@/components/posts/post-filters";
+import {
+  PostFilters,
+  type Tags,
+  type Years,
+} from "@/components/posts/post-filters";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 type PageSearch = {
   page?: number;
@@ -28,30 +33,34 @@ export const Route = createFileRoute("/")({
 });
 
 function HomeComponent() {
-  const navigate = Route.useNavigate();
   const { page, tags, year } = Route.useSearch();
+  const navigate = Route.useNavigate();
 
-  const posts = postsJson as unknown as Post[];
+  const postsData = useRef(postsJson as unknown as Post[]);
 
   const {
+    initializePosts,
     nextPage,
     previousPage,
-    setFilters,
-    filters,
     isFirstPage,
     isLastPage,
     currentPosts,
-    availablePosts,
+    filteredPosts,
     paginatedPosts,
-  } = usePosts(posts, {
-    initialProps: {
-      page: page ?? 0,
-      tags: tags ? sanitizeInitialTags(tags) : [],
-      year: year ? (year as Years[number]) : null,
-    },
-  });
+  } = usePostsStore();
 
-  if (posts.length === 0) {
+  const initialValues = {
+    tags: tags
+      ? new Set(sanitizeInitialTags(tags))
+      : (new Set() as Set<Tags[number]>),
+    year: (year ?? null) as Years[number] | null,
+  };
+
+  useEffect(() => {
+    initializePosts(postsData.current, initialValues, page ?? 0);
+  }, [postsData, initializePosts]);
+
+  if (postsData.current.length === 0) {
     return (
       <div className="flex items-center justify-center w-full min-h-screen px-8 py-6 text-center text-acc-red font-semibold text-lg">
         Error getting the posts.
@@ -60,21 +69,26 @@ function HomeComponent() {
   }
 
   return (
-    <main className="container mx-auto max-w-5xl px-8 py-6">
+    <main className="mx-auto max-w-5xl px-8 py-6 font-merriweather">
       <section>
         <div className="mb-5 mt-12">
-          <h1 className="font-extrabold tracking-tighter text-7xl mb-3">Kazyel's Dojo</h1>
+          <h1 className="font-extrabold tracking-tighter text-7xl mb-6 font-unbounded text-foreground">
+            Kazyel's Dojo
+          </h1>
 
-          <p className="text-lg text-muted-foreground text-pretty">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsam provident
-            quae, sapiente nemo blanditiis maiores id labore natus amet sed sint culpa
-            neque, quis necessitatibus cum a ullam! Aut, perferendis!
+          <p className="text-lg text-muted-foreground text-pretty tracking-wide">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsam
+            provident quae, sapiente nemo blanditiis maiores id labore natus
+            amet sed sint culpa neque, quis necessitatibus cum a ullam! Aut,
+            perferendis!
           </p>
         </div>
 
         <div className="py-4 flex flex-col w-full">
           <div className="flex items-center">
-            <h2 className="font-extrabold tracking-tighter text-4xl">Posts</h2>
+            <h2 className="font-extrabold tracking-tighter text-3xl font-unbounded text-foreground">
+              Posts
+            </h2>
 
             <div className="flex ml-3 gap-x-2">
               <button
@@ -88,7 +102,7 @@ function HomeComponent() {
                 disabled={isFirstPage}
                 className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
               >
-                <ChevronLeft className="size-6 stroke-3" />
+                <ChevronLeft className="size-6 stroke-3 text-foreground" />
               </button>
 
               <button
@@ -102,13 +116,13 @@ function HomeComponent() {
                 disabled={isLastPage}
                 className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
               >
-                <ChevronRight className="size-6 stroke-3" />
+                <ChevronRight className="size-6 stroke-3 text-foreground" />
               </button>
             </div>
           </div>
 
           <p className="text-primary/75 font-light text-lg">
-            {currentPosts} of {availablePosts} posts
+            {currentPosts} of {filteredPosts.length} posts
           </p>
         </div>
       </section>
@@ -120,7 +134,7 @@ function HomeComponent() {
           })}
         </div>
 
-        <PostFilters setFilters={setFilters} filters={filters} />
+        <PostFilters />
       </section>
     </main>
   );

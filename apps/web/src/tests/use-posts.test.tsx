@@ -3,7 +3,6 @@ import type { Tags } from "@/components/posts/post-filters";
 
 import { expect, test } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import usePosts from "@/lib/hooks/use-posts";
 
 const makePosts = (count: number, year = 2025): Post[] =>
   Array.from({ length: count }).map((_, i) => ({
@@ -38,7 +37,9 @@ test("year filter returns only matching posts and clamps page", () => {
   });
 
   expect(result.current.availablePosts).toBe(3);
-  expect(result.current.paginatedPosts.every((p) => p.year === 2025)).toBe(true);
+  expect(result.current.paginatedPosts.every((p) => p.year === 2025)).toBe(
+    true
+  );
   expect(result.current.isFirstPage).toBe(true);
 });
 

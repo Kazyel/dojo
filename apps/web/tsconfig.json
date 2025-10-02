@@ -10,7 +10,6 @@
     "skipLibCheck": true,
     "types": ["vite/client", "@types/mdx"],
     "rootDirs": ["."],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }

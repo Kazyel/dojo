@@ -22,7 +22,7 @@ export default function CodeBlock({ children, ...props }: CodeBlockProps) {
   };
 
   return (
-    <div className="relative group">
+    <div className="relative group my-3">
       <button
         onClick={copyCode}
         className={cn(
