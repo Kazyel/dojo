@@ -26,6 +26,7 @@ type PostsStore = {
     initialFilters?: Partial<Filters>,
     initialPage?: number
   ) => void;
+
   setFilters: (filters: Filters | ((prev: Filters) => Filters)) => void;
   toggleTag: (tag: Tags[number]) => void;
   toggleYear: (year: Years[number]) => void;
@@ -53,7 +54,6 @@ const defaultFilters: Filters = {
   year: null,
 };
 
-// Create store with subscribeWithSelector middleware
 export const usePostsStore = create<PostsStore>()(
   subscribeWithSelector((set, get) => ({
     posts: [],
@@ -68,13 +68,11 @@ export const usePostsStore = create<PostsStore>()(
     totalPosts: 0,
     currentPosts: 0,
 
-    initializePosts: (posts, initialFilters, initialPage) => {
+    initializePosts: (posts) => {
       set({
         posts,
-        filters: initialFilters
-          ? { ...defaultFilters, ...initialFilters }
-          : defaultFilters,
-        page: initialPage ?? 0,
+        filters: defaultFilters,
+        page: 0,
       });
       get()._computeValues();
     },
@@ -89,7 +87,6 @@ export const usePostsStore = create<PostsStore>()(
       get()._computeValues();
     },
 
-    // Clean toggle methods - no URL sync needed here!
     toggleTag: (tag) => {
       get().setFilters((prev) => {
         const newTags = new Set(prev.tags);

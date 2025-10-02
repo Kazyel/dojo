@@ -1,44 +1,27 @@
 import type { Post } from "@/lib/types";
 
-import { createFileRoute, Route as currentRoute } from "@tanstack/react-router";
-
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
 import postsJson from "@/lib/content/posts.json";
-import { sanitizeInitialTags } from "@/lib/utils";
+import { useURLSync } from "@/lib/hooks/use-url-sync";
 import { usePostsStore } from "@/lib/store/use-posts-store";
+import { z } from "zod";
 
 import { PostCard } from "@/components/posts/post-card";
-import {
-  PostFilters,
-  type Tags,
-  type Years,
-} from "@/components/posts/post-filters";
+import { PostFilters } from "@/components/posts/post-filters";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useRef } from "react";
-import { useURLSync } from "@/lib/hooks/use-url-sync";
 
-type PageSearch = {
-  page?: number;
-  tags?: string;
-  year?: number;
-};
+const searchSchema = z.object({
+  tags: z.string().optional(),
+  year: z.number().optional(),
+});
 
 export const Route = createFileRoute("/")({
   component: HomeComponent,
-  validateSearch: (search: Record<string, unknown>): PageSearch => {
-    return {
-      page: !search?.page ? undefined : Number(search?.page),
-      tags: !search?.tags ? undefined : String(search?.tags),
-      year: !search?.year ? undefined : Number(search?.year),
-    };
-  },
+  validateSearch: searchSchema,
 });
 
 function HomeComponent() {
-  const { page, tags, year } = Route.useSearch();
-  const navigate = Route.useNavigate();
-
-  useURLSync(Route as unknown as currentRoute);
-
   const postsData = useRef(postsJson as unknown as Post[]);
 
   const {
@@ -52,16 +35,11 @@ function HomeComponent() {
     paginatedPosts,
   } = usePostsStore();
 
-  const initialValues = {
-    tags: tags
-      ? new Set(sanitizeInitialTags(tags))
-      : (new Set() as Set<Tags[number]>),
-    year: (year ?? null) as Years[number] | null,
-  };
-
   useEffect(() => {
-    initializePosts(postsData.current, initialValues, page ?? 0);
+    initializePosts(postsData.current);
   }, [postsData, initializePosts]);
+
+  useURLSync();
 
   if (postsData.current.length === 0) {
     return (

@@ -1,32 +1,44 @@
-import type { Tags, Years } from "@/components/posts/post-filters";
-
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { usePostsStore } from "../store/use-posts-store";
-import { Route } from "@tanstack/react-router";
+import type { Years } from "@/components/posts/post-filters";
 import { sanitizeInitialTags } from "../utils";
 
-export function useURLSync(Route: Route) {
-  const navigate = Route.useNavigate();
-  const searchParams: Record<string, string | number> = Route.useSearch();
+type PageSearch = {
+  tags?: string;
+  year?: number;
+};
+
+export function useURLSync() {
+  const navigate = useNavigate({ from: "/" });
+  const { tags, year }: PageSearch = useSearch({ from: "__root__" });
 
   useEffect(() => {
     const unsubscribe = usePostsStore.subscribe(
       (state) => state.filters,
       (filters) => {
-        const params = new URLSearchParams();
-
-        if (filters.tags.size > 0) {
-          params.set("tags", [...filters.tags].join(","));
-        }
-
-        if (filters.year) {
-          params.set("year", filters.year.toString());
-        }
-
-        const search = params.toString();
-        const newPath = search ? `?${search}` : window.location.pathname;
         navigate({
-          to: newPath,
+          search: (prev) => {
+            const newSearch: Record<string, any> = {};
+
+            if (filters.tags.size > 0) {
+              newSearch.tags = [...filters.tags].join(",");
+            }
+
+            if (filters.tags.size <= 0) {
+              delete prev.tags;
+            }
+
+            if (filters.year) {
+              newSearch.year = filters.year;
+            }
+
+            if (!filters.year) {
+              delete prev.year;
+            }
+
+            return { ...prev, ...newSearch };
+          },
           replace: true,
         });
       },
@@ -37,26 +49,12 @@ export function useURLSync(Route: Route) {
   }, [navigate]);
 
   useEffect(() => {
-    const yearParam = searchParams["year"];
-    const tagsParam = searchParams["tags"];
-    const pageParam = searchParams["page"];
+    if (!tags && !year) return;
 
     const setFilters = usePostsStore.getState().setFilters;
-    const setPage = usePostsStore.getState().setPage;
-
-    if (!pageParam) {
-      return;
-    }
-
-    if (!tagsParam && !yearParam) return;
-
-    setFilters((prev) => ({
-      tags: tagsParam
-        ? new Set(sanitizeInitialTags(tagsParam as string))
-        : prev.tags,
-      year: yearParam ? (Number(yearParam) as Years[number]) : prev.year,
-    }));
-
-    setPage(Number(pageParam));
-  }, []);
+    setFilters({
+      tags: tags ? new Set(sanitizeInitialTags(tags)) : new Set(),
+      year: (year as Years[number]) ?? null,
+    });
+  }, [tags, year]);
 }
