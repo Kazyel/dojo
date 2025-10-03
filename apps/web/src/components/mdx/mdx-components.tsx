@@ -1,5 +1,6 @@
-import CodeBlock from "@/components/mdx/code-block";
 import type { MDXProps } from "mdx/types";
+
+import CodeBlock from "@/components/mdx/code-block";
 
 export const useMDXComponents = () => {
   return {

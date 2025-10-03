@@ -1,10 +1,11 @@
+import { NotFound } from "@/components/not-found";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
 type PostModule = {
   default: React.ComponentType<any>;
 };
 
-const postModules = import.meta.glob<PostModule>("@/lib/content/*.mdx");
+const postModules = import.meta.glob<PostModule>("@/lib/content/mdx/*.mdx");
 const postModuleMap: Record<string, () => Promise<any>> = {};
 
 for (const fullPath in postModules) {
@@ -14,7 +15,7 @@ for (const fullPath in postModules) {
   }
 }
 
-export const Route = createFileRoute("/__posts/$postName")({
+export const Route = createFileRoute("/p/$postName")({
   loader: async ({ params }) => {
     const importFn = postModuleMap[params.postName];
     if (!importFn) {
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/__posts/$postName")({
     return (await importFn()) as PostModule;
   },
   component: RouteComponent,
+  notFoundComponent: () => <NotFound isPost={true} />,
 });
 
 function RouteComponent() {
