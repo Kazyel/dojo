@@ -33,7 +33,7 @@ export const useMDXComponents = () => {
     blockquote(properties: MDXProps) {
       return (
         <blockquote
-          className="border-l-4 dark:border-acc-gold/60 text-lg dark:bg-acc-gold/10 bg-acc-red/10 border-acc-red/60 pl-4 italic my-4 text-foreground/85 font-extralight py-1"
+          className="border-l-4 dark:border-acc-gold/60 dark:bg-acc-gold/10 bg-acc-red/10 border-acc-red/60 italic text-foreground/85 py-px font-extralight"
           {...properties}
         />
       );

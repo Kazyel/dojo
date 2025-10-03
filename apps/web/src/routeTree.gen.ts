@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as _postsRouteRouteImport } from './routes/__posts/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as _postsTesteIndexRouteImport } from './routes/__posts/teste/index'
+import { Route as _postsPostNameRouteImport } from './routes/__posts/$postName'
 
 const _postsRouteRoute = _postsRouteRouteImport.update({
   id: '/__posts',
@@ -22,32 +22,32 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const _postsTesteIndexRoute = _postsTesteIndexRouteImport.update({
-  id: '/teste/',
-  path: '/teste/',
+const _postsPostNameRoute = _postsPostNameRouteImport.update({
+  id: '/$postName',
+  path: '/$postName',
   getParentRoute: () => _postsRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/teste': typeof _postsTesteIndexRoute
+  '/$postName': typeof _postsPostNameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/teste': typeof _postsTesteIndexRoute
+  '/$postName': typeof _postsPostNameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/__posts': typeof _postsRouteRouteWithChildren
-  '/__posts/teste/': typeof _postsTesteIndexRoute
+  '/__posts/$postName': typeof _postsPostNameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/teste'
+  fullPaths: '/' | '/$postName'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/teste'
-  id: '__root__' | '/' | '/__posts' | '/__posts/teste/'
+  to: '/' | '/$postName'
+  id: '__root__' | '/' | '/__posts' | '/__posts/$postName'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -71,22 +71,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/__posts/teste/': {
-      id: '/__posts/teste/'
-      path: '/teste'
-      fullPath: '/teste'
-      preLoaderRoute: typeof _postsTesteIndexRouteImport
+    '/__posts/$postName': {
+      id: '/__posts/$postName'
+      path: '/$postName'
+      fullPath: '/$postName'
+      preLoaderRoute: typeof _postsPostNameRouteImport
       parentRoute: typeof _postsRouteRoute
     }
   }
 }
 
 interface _postsRouteRouteChildren {
-  _postsTesteIndexRoute: typeof _postsTesteIndexRoute
+  _postsPostNameRoute: typeof _postsPostNameRoute
 }
 
 const _postsRouteRouteChildren: _postsRouteRouteChildren = {
-  _postsTesteIndexRoute: _postsTesteIndexRoute,
+  _postsPostNameRoute: _postsPostNameRoute,
 }
 
 const _postsRouteRouteWithChildren = _postsRouteRoute._addFileChildren(
