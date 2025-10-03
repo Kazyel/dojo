@@ -22,11 +22,11 @@ export default function CodeBlock({ children, ...props }: CodeBlockProps) {
   };
 
   return (
-    <div className="relative group my-3">
+    <div className="relative group my-3 not-prose">
       <button
         onClick={copyCode}
         className={cn(
-          "absolute top-2 right-2 p-1.5 text-sm bg-gray-700 text-off-w rounded cursor-pointer opacity-0",
+          "absolute top-2 right-2 p-1.5 bg-gray-700 text-off-w rounded cursor-pointer opacity-0",
           "group-hover:opacity-100 transition-all duration-100"
         )}
       >

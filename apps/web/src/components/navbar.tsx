@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 

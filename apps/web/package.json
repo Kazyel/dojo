@@ -38,6 +38,7 @@
   "devDependencies": {
     "@shikijs/colorized-brackets": "^3.13.0",
     "@shikijs/rehype": "^3.13.0",
+    "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-query-devtools": "^5.85.5",
     "@tanstack/react-router-devtools": "^1.114.27",
     "@tanstack/router-plugin": "^1.114.27",

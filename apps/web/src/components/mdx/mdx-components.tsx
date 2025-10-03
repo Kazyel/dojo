@@ -6,7 +6,7 @@ export const useMDXComponents = () => {
     h1(properties: MDXProps) {
       return (
         <h1
-          className="text-5xl font-extrabold tracking-tighter mb-5"
+          className="text-5xl font-extrabold tracking-tighter prose-h1 text-foreground mb-8"
           {...properties}
         />
       );
@@ -14,7 +14,7 @@ export const useMDXComponents = () => {
     h2(properties: MDXProps) {
       return (
         <h2
-          className="text-4xl mt-5 font-semibold tracking-tight"
+          className="text-4xl font-semibold tracking-tight text-foreground"
           {...properties}
         />
       );
@@ -22,13 +22,13 @@ export const useMDXComponents = () => {
     h3(properties: MDXProps) {
       return (
         <h3
-          className="text-2xl mt-5 font-semibold tracking-tight"
+          className="text-2xl font-semibold tracking-tight text-foreground"
           {...properties}
         />
       );
     },
     hr(properties: MDXProps) {
-      return <hr className="border-foreground/60" {...properties} />;
+      return <hr className="border-foreground/60 mb-6 mt-0" {...properties} />;
     },
     blockquote(properties: MDXProps) {
       return (
@@ -48,18 +48,24 @@ export const useMDXComponents = () => {
     },
     ol(properties: MDXProps) {
       return (
-        <ol className="list-decimal list-inside my-3 text-lg" {...properties} />
+        <ol
+          className="list-decimal list-inside text-lg text-foreground"
+          {...properties}
+        />
       );
     },
     ul(properties: MDXProps) {
       return (
-        <ul className="list-disc list-inside my-3 text-lg" {...properties} />
+        <ul
+          className="list-disc list-inside text-lg text-foreground"
+          {...properties}
+        />
       );
     },
     a(properties: MDXProps) {
       return (
         <a
-          className="text-acc-red dark:text-acc-gold underline underline-offset-2 decoration-1 hover:text-acc-red/70 dark:hover:text-acc-gold/70   transition-colors duration-150"
+          className="text-acc-red dark:text-acc-gold underline underline-offset-2 decoration-1 hover:text-acc-red/70 dark:hover:text-acc-gold/70 transition-colors duration-150"
           {...properties}
         />
       );

@@ -6,7 +6,7 @@ export const Route = createFileRoute("/__posts")({
 
 function RouteComponent() {
   return (
-    <div className="container mx-auto max-w-5xl px-8 py-6 font-merriweather">
+    <div className="mx-auto max-w-5xl p-8 font-merriweather prose-sm">
       <Outlet />
     </div>
   );
