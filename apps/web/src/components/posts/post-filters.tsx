@@ -20,11 +20,11 @@ export function PostFilters() {
     <aside className="border-foreground h-fit flex flex-col sticky col-span-1 top-4 pr-6">
       <div
         className={cn(
-          `flex items-center justify-between mb-2.5`,
+          `flex items-center justify-between mb-4`,
           isMobile && `justify-normal gap-x-4`
         )}
       >
-        <h2 className="text-foreground text-2xl font-extrabold tracking-tight font-unbounded">
+        <h2 className="text-foreground text-3xl font-extrabold tracking-tight font-unbounded">
           Filters
         </h2>
 
@@ -47,7 +47,7 @@ export function PostFilters() {
         <div className="w-full flex items-center gap-x-2">
           <Tags className="size-5 text-acc-red" />
 
-          <h3 className="font-semibold font-unbounded text-foreground/85">
+          <h3 className="font-semibold font-unbounded text-foreground/90">
             Tags
           </h3>
         </div>
@@ -61,7 +61,7 @@ export function PostFilters() {
         <div className="w-full flex items-center gap-x-2">
           <Calendar className="size-5 text-acc-red" />
 
-          <h3 className="font-semibold font-unbounded text-foreground/85">
+          <h3 className="font-semibold font-unbounded text-foreground/90">
             Years
           </h3>
         </div>

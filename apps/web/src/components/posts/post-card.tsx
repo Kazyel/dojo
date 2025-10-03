@@ -1,9 +1,10 @@
 import type { Post } from "@/lib/types";
 
-import { Link } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
+
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Link } from "@tanstack/react-router";
 
 interface PostCardProps {
   post: Post;
@@ -13,7 +14,7 @@ interface PostCardProps {
 export function PostCard({ post, index }: PostCardProps) {
   return (
     <motion.article
-      key={post.link}
+      key={post.id}
       animate={{
         opacity: [0.9, 1],
       }}
@@ -24,13 +25,13 @@ export function PostCard({ post, index }: PostCardProps) {
       )}
     >
       <Link
-        to={post.link}
+        to={"/p/" + post.slug}
         viewTransition={{ types: ["fade"] }}
         className="flex flex-col justify-between h-full"
       >
         <div>
           <div className="flex justify-between gap-x-3">
-            <p className="text-3xl font-semibold tracking-tight text-secondary text-balance mb-1">
+            <p className="text-3xl font-bold tracking-tight text-secondary text-balance mb-1">
               {post.title}
             </p>
 
@@ -39,7 +40,7 @@ export function PostCard({ post, index }: PostCardProps) {
             </span>
           </div>
 
-          <span className="text-acc-red italic font-bold text-xs font-unbounded">
+          <span className="text-acc-red italic font-semibold text-sm font-unbounded">
             {post.year}
           </span>
         </div>

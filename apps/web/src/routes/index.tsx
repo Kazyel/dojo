@@ -3,9 +3,9 @@ import type { Post } from "@/lib/types";
 import { z } from "zod";
 import { useEffect, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import postsJson from "@/lib/content/posts.json";
 import { useURLSync } from "@/lib/hooks/use-url-sync";
 import { usePostsStore } from "@/lib/store/use-posts-store";
+import postsJson from "@/lib/content/posts.json";
 
 import { PostCard } from "@/components/posts/post-card";
 import { PostFilters } from "@/components/posts/post-filters";
@@ -44,14 +44,6 @@ function HomeComponent() {
 
   useURLSync();
 
-  if (postsData.current.length === 0) {
-    return (
-      <div className="flex items-center justify-center w-full min-h-screen px-8 py-6 text-center text-acc-red font-semibold text-lg">
-        Error getting the posts.
-      </div>
-    );
-  }
-
   return (
     <main className="mx-auto max-w-5xl px-8 py-6 font-merriweather">
       <section>
@@ -70,7 +62,7 @@ function HomeComponent() {
 
         <div className="py-4 flex flex-col w-full">
           <div className="flex items-center">
-            <h2 className="font-extrabold tracking-tighter text-3xl font-unbounded text-foreground">
+            <h2 className="font-extrabold tracking-tighter text-4xl font-unbounded text-foreground">
               Posts
             </h2>
 
@@ -79,7 +71,7 @@ function HomeComponent() {
                 <button
                   onClick={previousPage}
                   disabled={isFirstPage}
-                  className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-25"
+                  className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-30"
                 >
                   <ChevronLeft className="size-6 stroke-3 text-foreground" />
                 </button>
@@ -87,7 +79,7 @@ function HomeComponent() {
                 <button
                   onClick={nextPage}
                   disabled={isLastPage}
-                  className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
+                  className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-30"
                 >
                   <ChevronRight className="size-6 stroke-3 text-foreground" />
                 </button>
@@ -105,6 +97,12 @@ function HomeComponent() {
 
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative">
         <div className="flex items-center justify-center gap-4.5 flex-wrap col-span-1 sm:col-span-2 lg:col-span-2 lg:justify-start">
+          {postsData.current.length === 0 && (
+            <p className="font-semibold text-lg text-foreground py-10 mx-auto">
+              No posts available.
+            </p>
+          )}
+
           {paginatedPosts.map((post, index) => {
             return <PostCard post={post} index={index} key={index} />;
           })}

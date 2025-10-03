@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
-export default function Navbar() {
+export function Navbar() {
   const { theme, setTheme } = useTheme();
 
   const [showNavbar, setShowNavbar] = useState(true);
