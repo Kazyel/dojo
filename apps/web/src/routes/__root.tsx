@@ -9,6 +9,7 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import "../index.css";
+import { Footer } from "@/components/footer";
 
 export interface RouterAppContext {}
 
@@ -46,6 +47,7 @@ function RootComponent() {
       >
         <Navbar />
         <Outlet />
+        <Footer />
 
         <Toaster richColors />
       </ThemeProvider>
