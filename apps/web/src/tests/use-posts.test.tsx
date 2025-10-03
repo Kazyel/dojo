@@ -1,8 +1,9 @@
 import type { Post } from "@/lib/types";
 import type { Tags } from "@/components/posts/post-filters";
 
-import { expect, test } from "vitest";
+import { usePostsStore } from "@/lib/store/use-posts-store";
 import { renderHook, act } from "@testing-library/react";
+import { expect, test } from "vitest";
 
 const makePosts = (count: number, year = 2025): Post[] =>
   Array.from({ length: count }).map((_, i) => ({
@@ -12,69 +13,142 @@ const makePosts = (count: number, year = 2025): Post[] =>
     year: year,
     tags:
       i % 2 === 0
-        ? (["coding"] as unknown as Tags[])
-        : (["thoughts"] as unknown as Tags[]),
+        ? (["coding"] as unknown as Tags)
+        : (["thoughts"] as unknown as Tags),
   }));
 
-test("pagination and counts work with default filters", () => {
-  const posts = makePosts(10);
-  const { result } = renderHook(() => usePosts(posts));
-  expect(result.current.paginatedPosts).toHaveLength(6);
-  expect(result.current.availablePosts).toBe(10);
+test("Initialize posts working correctly", () => {
+  const { result } = renderHook(() => usePostsStore());
+
+  act(() => {
+    result.current.initializePosts(makePosts(10));
+  });
+
+  expect(result.current.posts.length).toBe(10);
+  expect(result.current.filteredPosts.length).toBe(10);
+  expect(result.current.paginatedPosts.length).toBe(6);
+  expect(result.current.totalPages).toBe(2);
+  expect(result.current.isFirstPage).toBe(true);
+  expect(result.current.isLastPage).toBe(false);
+  expect(result.current.totalPosts).toBe(10);
   expect(result.current.currentPosts).toBe(6);
 });
 
-test("year filter returns only matching posts and clamps page", () => {
-  const posts = [...makePosts(3, 2025), ...makePosts(6, 2024)];
-  const { result } = renderHook(() => usePosts(posts as Post[]));
+test("Pagination working correctly", () => {
+  const { result } = renderHook(() => usePostsStore());
+
+  act(() => {
+    result.current.initializePosts(makePosts(10));
+  });
+
+  expect(result.current.page).toBe(1);
+  expect(result.current.isFirstPage).toBe(true);
+  expect(result.current.isLastPage).toBe(false);
 
   act(() => {
     result.current.nextPage();
   });
 
+  expect(result.current.page).toBe(2);
+  expect(result.current.isFirstPage).toBe(false);
+  expect(result.current.isLastPage).toBe(true);
+  expect(result.current.paginatedPosts.length).toBe(4);
+  expect(result.current.currentPosts).toBe(10);
+
   act(() => {
-    result.current.setFilters({ tags: [], year: 2025 });
+    result.current.previousPage();
   });
 
-  expect(result.current.availablePosts).toBe(3);
-  expect(result.current.paginatedPosts.every((p) => p.year === 2025)).toBe(
-    true
-  );
+  expect(result.current.page).toBe(1);
   expect(result.current.isFirstPage).toBe(true);
+  expect(result.current.isLastPage).toBe(false);
+  expect(result.current.paginatedPosts.length).toBe(6);
+  expect(result.current.currentPosts).toBe(6);
+
+  act(() => {
+    result.current.setPage(2);
+  });
+
+  expect(result.current.page).toBe(2);
+  expect(result.current.isFirstPage).toBe(false);
+  expect(result.current.isLastPage).toBe(true);
+  expect(result.current.paginatedPosts.length).toBe(4);
+  expect(result.current.currentPosts).toBe(10);
 });
 
-test("tag filter returns only matching posts and clamps page", () => {
-  const posts = makePosts(10);
-  const { result } = renderHook(() => usePosts(posts as Post[]));
+test("Filtering working correctly", () => {
+  const { result } = renderHook(() => usePostsStore());
 
   act(() => {
-    result.current.nextPage();
+    result.current.initializePosts(
+      makePosts(10, 2025).concat(makePosts(10, 2024))
+    );
   });
 
-  act(() => {
-    result.current.setFilters({ tags: ["coding"], year: null });
-  });
-
-  expect(result.current.availablePosts).toBe(5);
-  expect(
-    result.current.paginatedPosts.every((p) => p.tags.includes("coding" as any))
-  ).toBe(true);
+  expect(result.current.posts.length).toBe(20);
+  expect(result.current.filteredPosts.length).toBe(20);
+  expect(result.current.paginatedPosts.length).toBe(6);
+  expect(result.current.totalPages).toBe(4);
   expect(result.current.isFirstPage).toBe(true);
+  expect(result.current.isLastPage).toBe(false);
+  expect(result.current.totalPosts).toBe(20);
+  expect(result.current.currentPosts).toBe(6);
+
+  act(() => {
+    result.current.setFilters({ tags: new Set(["coding"]), year: null });
+  });
+
+  expect(result.current.posts.length).toBe(20);
+  expect(result.current.filteredPosts.length).toBe(10);
+  expect(result.current.paginatedPosts.length).toBe(6);
+  expect(result.current.totalPages).toBe(2);
+  expect(result.current.isFirstPage).toBe(true);
+  expect(result.current.isLastPage).toBe(false);
+  expect(result.current.totalPosts).toBe(10);
+  expect(result.current.currentPosts).toBe(6);
 });
 
-test("combined filters return only matching posts", () => {
-  const posts = [...makePosts(3, 2025), ...makePosts(6, 2024)];
-  const { result } = renderHook(() => usePosts(posts as Post[]));
+test("Resetting filters working correctly", () => {
+  const { result } = renderHook(() => usePostsStore());
 
   act(() => {
-    result.current.setFilters({ tags: ["coding"], year: 2024 as any });
+    result.current.initializePosts(
+      makePosts(10, 2025).concat(makePosts(10, 2024))
+    );
   });
 
-  expect(result.current.availablePosts).toBe(3);
+  expect(result.current.posts.length).toBe(20);
+  expect(result.current.filteredPosts.length).toBe(20);
+  expect(result.current.paginatedPosts.length).toBe(6);
+  expect(result.current.totalPages).toBe(4);
+  expect(result.current.isFirstPage).toBe(true);
+  expect(result.current.isLastPage).toBe(false);
+  expect(result.current.totalPosts).toBe(20);
+  expect(result.current.currentPosts).toBe(6);
 
-  expect(
-    result.current.paginatedPosts.every(
-      (p) => p.tags.includes("coding" as any) && p.year === 2024
-    )
-  ).toBe(true);
+  act(() => {
+    result.current.setFilters({ tags: new Set(["coding"]), year: null });
+  });
+
+  expect(result.current.posts.length).toBe(20);
+  expect(result.current.filteredPosts.length).toBe(10);
+  expect(result.current.paginatedPosts.length).toBe(6);
+  expect(result.current.totalPages).toBe(2);
+  expect(result.current.isFirstPage).toBe(true);
+  expect(result.current.isLastPage).toBe(false);
+  expect(result.current.totalPosts).toBe(10);
+  expect(result.current.currentPosts).toBe(6);
+
+  act(() => {
+    result.current.resetFilters();
+  });
+
+  expect(result.current.posts.length).toBe(20);
+  expect(result.current.filteredPosts.length).toBe(20);
+  expect(result.current.paginatedPosts.length).toBe(6);
+  expect(result.current.totalPages).toBe(4);
+  expect(result.current.isFirstPage).toBe(true);
+  expect(result.current.isLastPage).toBe(false);
+  expect(result.current.totalPosts).toBe(20);
+  expect(result.current.currentPosts).toBe(6);
 });

@@ -37,6 +37,7 @@ function RootComponent() {
   return (
     <>
       <HeadContent />
+
       <ThemeProvider
         attribute="class"
         defaultTheme="dark"

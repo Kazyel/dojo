@@ -1,11 +1,11 @@
 import type { Post } from "@/lib/types";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 import { useEffect, useRef } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 import postsJson from "@/lib/content/posts.json";
 import { useURLSync } from "@/lib/hooks/use-url-sync";
 import { usePostsStore } from "@/lib/store/use-posts-store";
-import { z } from "zod";
 
 import { PostCard } from "@/components/posts/post-card";
 import { PostFilters } from "@/components/posts/post-filters";

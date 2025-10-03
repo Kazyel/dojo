@@ -21,12 +21,7 @@ type PostsStore = {
   totalPosts: number;
   currentPosts: number;
 
-  initializePosts: (
-    posts: Post[],
-    initialFilters?: Partial<Filters>,
-    initialPage?: number
-  ) => void;
-
+  initializePosts: (posts: Post[]) => void;
   setFilters: (filters: Filters | ((prev: Filters) => Filters)) => void;
   toggleTag: (tag: Tags[number]) => void;
   toggleYear: (year: Years[number]) => void;
@@ -62,21 +57,21 @@ const createDefaultFilters = (): Filters => ({
 export const usePostsStore = create<PostsStore>()(
   subscribeWithSelector((set, get) => ({
     posts: [],
-    filters: createDefaultFilters(),
-    page: 0,
     filteredPosts: [],
     paginatedPosts: [],
+    page: 1,
     totalPages: 1,
-    isFirstPage: true,
-    isLastPage: true,
     totalPosts: 0,
     currentPosts: 0,
+    isFirstPage: true,
+    isLastPage: true,
+    filters: createDefaultFilters(),
 
     initializePosts: (posts) => {
       set({
         posts,
         filters: createDefaultFilters(),
-        page: 0,
+        page: 1,
       });
       get()._computeFilteredPosts();
       get()._computePagination();
@@ -88,7 +83,7 @@ export const usePostsStore = create<PostsStore>()(
           ? filtersOrUpdater(get().filters)
           : filtersOrUpdater;
 
-      set({ filters: newFilters, page: 0 });
+      set({ filters: newFilters, page: 1 });
       get()._computeFilteredPosts();
       get()._computePagination();
     },
@@ -119,7 +114,7 @@ export const usePostsStore = create<PostsStore>()(
 
     nextPage: () => {
       const { page, totalPages } = get();
-      const lastPage = Math.max(0, totalPages - 1);
+      const lastPage = Math.max(0, totalPages);
       set({ page: Math.min(page + 1, lastPage) });
       get()._computePagination();
     },
@@ -131,7 +126,7 @@ export const usePostsStore = create<PostsStore>()(
     },
 
     resetFilters: () => {
-      set({ filters: createDefaultFilters(), page: 0 });
+      set({ filters: createDefaultFilters(), page: 1 });
       get()._computeFilteredPosts();
       get()._computePagination();
     },
@@ -147,18 +142,16 @@ export const usePostsStore = create<PostsStore>()(
 
       const totalPosts = filteredPosts.length;
       const totalPages = Math.max(1, Math.ceil(totalPosts / ITEMS_PER_PAGE));
-      const lastPage = Math.max(0, totalPages - 1);
+      const lastPage = Math.max(0, totalPages);
       const currentPage = Math.min(page, lastPage);
 
-      const startIndex = currentPage * ITEMS_PER_PAGE;
+      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
       const endIndex = startIndex + ITEMS_PER_PAGE;
-      const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
 
-      const currentPosts = Math.min(
-        totalPosts,
-        (currentPage + 1) * ITEMS_PER_PAGE
-      );
-      const isFirstPage = currentPage === 0;
+      const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
+      const currentPosts = Math.min(totalPosts, currentPage * ITEMS_PER_PAGE);
+
+      const isFirstPage = currentPage === 1;
       const isLastPage = currentPage >= lastPage;
 
       set({

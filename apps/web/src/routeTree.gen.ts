@@ -9,64 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PRouteRouteImport } from './routes/p/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PPostNameRouteImport } from './routes/p/$postName'
 
-const PRouteRoute = PRouteRouteImport.update({
-  id: '/p',
-  path: '/p',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PPostNameRoute = PPostNameRouteImport.update({
-  id: '/$postName',
-  path: '/$postName',
-  getParentRoute: () => PRouteRoute,
+  id: '/p/$postName',
+  path: '/p/$postName',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/p': typeof PRouteRouteWithChildren
   '/p/$postName': typeof PPostNameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/p': typeof PRouteRouteWithChildren
   '/p/$postName': typeof PPostNameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/p': typeof PRouteRouteWithChildren
   '/p/$postName': typeof PPostNameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/p' | '/p/$postName'
+  fullPaths: '/' | '/p/$postName'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/p' | '/p/$postName'
-  id: '__root__' | '/' | '/p' | '/p/$postName'
+  to: '/' | '/p/$postName'
+  id: '__root__' | '/' | '/p/$postName'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PRouteRoute: typeof PRouteRouteWithChildren
+  PPostNameRoute: typeof PPostNameRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/p': {
-      id: '/p'
-      path: '/p'
-      fullPath: '/p'
-      preLoaderRoute: typeof PRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -76,28 +60,17 @@ declare module '@tanstack/react-router' {
     }
     '/p/$postName': {
       id: '/p/$postName'
-      path: '/$postName'
+      path: '/p/$postName'
       fullPath: '/p/$postName'
       preLoaderRoute: typeof PPostNameRouteImport
-      parentRoute: typeof PRouteRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface PRouteRouteChildren {
-  PPostNameRoute: typeof PPostNameRoute
-}
-
-const PRouteRouteChildren: PRouteRouteChildren = {
-  PPostNameRoute: PPostNameRoute,
-}
-
-const PRouteRouteWithChildren =
-  PRouteRoute._addFileChildren(PRouteRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PRouteRoute: PRouteRouteWithChildren,
+  PPostNameRoute: PPostNameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
