@@ -10,6 +10,8 @@ import { usePostsStore } from "@/lib/store/use-posts-store";
 import { PostCard } from "@/components/posts/post-card";
 import { PostFilters } from "@/components/posts/post-filters";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
+import { PostFiltersModal } from "@/components/posts/post-filters-modal";
 
 const searchSchema = z.object({
   tags: z.string().optional(),
@@ -23,6 +25,7 @@ export const Route = createFileRoute("/")({
 
 function HomeComponent() {
   const postsData = useRef(postsJson as unknown as Post[]);
+  const isMobile = useIsMobile();
 
   const {
     initializePosts,
@@ -53,7 +56,7 @@ function HomeComponent() {
     <main className="mx-auto max-w-5xl px-8 py-6 font-merriweather">
       <section>
         <div className="mb-5 mt-12">
-          <h1 className="font-extrabold tracking-tighter text-7xl mb-6 font-unbounded text-foreground">
+          <h1 className="font-extrabold tracking-tighter text-6xl sm:text-7xl mb-6 font-unbounded text-foreground">
             Kazyel's Dojo
           </h1>
 
@@ -71,22 +74,26 @@ function HomeComponent() {
               Posts
             </h2>
 
-            <div className="flex ml-3 gap-x-2">
-              <button
-                onClick={previousPage}
-                disabled={isFirstPage}
-                className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
-              >
-                <ChevronLeft className="size-6 stroke-3 text-foreground" />
-              </button>
+            <div className="flex items-center justify-between w-full">
+              <div className="flex ml-3 gap-x-1.5">
+                <button
+                  onClick={previousPage}
+                  disabled={isFirstPage}
+                  className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-25"
+                >
+                  <ChevronLeft className="size-6 stroke-3 text-foreground" />
+                </button>
 
-              <button
-                onClick={nextPage}
-                disabled={isLastPage}
-                className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
-              >
-                <ChevronRight className="size-6 stroke-3 text-foreground" />
-              </button>
+                <button
+                  onClick={nextPage}
+                  disabled={isLastPage}
+                  className="mt-1 cursor-pointer disabled:cursor-default disabled:opacity-60"
+                >
+                  <ChevronRight className="size-6 stroke-3 text-foreground" />
+                </button>
+              </div>
+
+              {isMobile && <PostFiltersModal />}
             </div>
           </div>
 
@@ -103,7 +110,7 @@ function HomeComponent() {
           })}
         </div>
 
-        <PostFilters />
+        {!isMobile && <PostFilters />}
       </section>
     </main>
   );

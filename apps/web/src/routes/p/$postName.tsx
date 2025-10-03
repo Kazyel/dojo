@@ -32,7 +32,7 @@ function RouteComponent() {
   const PostComponent = postModule.default;
 
   return (
-    <div className="mx-auto max-w-5xl p-8 font-merriweather prose-sm">
+    <div className="mx-auto max-w-5xl px-6 py-12 md:px-8 md:py-14 font-merriweather prose-sm">
       <PostComponent />
     </div>
   );

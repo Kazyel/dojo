@@ -2,7 +2,9 @@ import { usePostsStore } from "@/lib/store/use-posts-store";
 
 import { motion } from "motion/react";
 import { PostTag } from "@/components/posts/post-tags";
-import { Calendar, ListFilterPlus, ListRestart, Tags } from "lucide-react";
+import { Calendar, ListRestart, Tags } from "lucide-react";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
+import { cn } from "@/lib/utils";
 
 export type Tags = (typeof TAGS)[number][];
 export type Years = (typeof YEARS)[number][];
@@ -12,10 +14,16 @@ const YEARS = [2025] as const;
 
 export function PostFilters() {
   const { filters, resetFilters } = usePostsStore();
+  const isMobile = useIsMobile();
 
   return (
-    <aside className="border-l-2 border-foreground pl-4.5 py-1.5 h-fit hidden lg:flex lg:flex-col lg:sticky lg:col-span-1 lg:top-4">
-      <div className="flex items-center justify-between mb-2.5">
+    <aside className="border-foreground h-fit flex flex-col sticky col-span-1 top-4 pr-6">
+      <div
+        className={cn(
+          `flex items-center justify-between mb-2.5`,
+          isMobile && `justify-normal gap-x-4`
+        )}
+      >
         <h2 className="text-foreground text-2xl font-extrabold tracking-tight font-unbounded">
           Filters
         </h2>

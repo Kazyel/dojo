@@ -7,7 +7,7 @@ export const useMDXComponents = () => {
     h1(properties: MDXProps) {
       return (
         <h1
-          className="text-5xl font-extrabold tracking-tighter prose-h1 text-foreground mb-8"
+          className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter prose-h1 text-foreground lg:mb-6 text-balance"
           {...properties}
         />
       );
@@ -15,7 +15,7 @@ export const useMDXComponents = () => {
     h2(properties: MDXProps) {
       return (
         <h2
-          className="text-4xl font-semibold tracking-tight text-foreground"
+          className="text-2xl sm:text-3xl lg:text-5xl font-extrabold tracking-tighter text-foreground text-balance lg:mt-12 lg:mb-6"
           {...properties}
         />
       );
@@ -23,7 +23,7 @@ export const useMDXComponents = () => {
     h3(properties: MDXProps) {
       return (
         <h3
-          className="text-2xl font-semibold tracking-tight text-foreground"
+          className="text-xl sm:text-2xl lg:text-3xl font-medium tracking-tighter text-foreground text-balance lg:mt-3 lg:mb-3"
           {...properties}
         />
       );
@@ -34,7 +34,7 @@ export const useMDXComponents = () => {
     blockquote(properties: MDXProps) {
       return (
         <blockquote
-          className="border-l-4 dark:border-acc-gold/60 dark:bg-acc-gold/10 bg-acc-red/10 border-acc-red/60 italic text-foreground/85 py-px font-extralight"
+          className="border-l-4 dark:border-acc-gold/60 dark:bg-acc-gold/10 bg-acc-red/10 border-acc-red/60 italic text-foreground py-px font-light"
           {...properties}
         />
       );
@@ -42,7 +42,7 @@ export const useMDXComponents = () => {
     p(properties: MDXProps) {
       return (
         <p
-          className="dark:text-off-w/85 text-lg text-black/85"
+          className="text-foreground/75 text-base md:text-lg "
           {...properties}
         />
       );
@@ -50,7 +50,7 @@ export const useMDXComponents = () => {
     ol(properties: MDXProps) {
       return (
         <ol
-          className="list-decimal list-inside text-lg text-foreground"
+          className="list-decimal list-inside text-base md:text-lg text-foreground/75 ml-0 pl-1 md:pl-2"
           {...properties}
         />
       );
@@ -58,9 +58,17 @@ export const useMDXComponents = () => {
     ul(properties: MDXProps) {
       return (
         <ul
-          className="list-disc list-inside text-lg text-foreground"
+          className="list-disc list-inside text-base md:text-lg text-foreground/75 ml-0 pl-1 md:pl-2"
           {...properties}
         />
+      );
+    },
+    li(properties: MDXProps) {
+      return <li className="[&>p]:inline" {...properties} />;
+    },
+    strong(properties: MDXProps) {
+      return (
+        <strong className="font-extrabold text-foreground/90" {...properties} />
       );
     },
     a(properties: MDXProps) {

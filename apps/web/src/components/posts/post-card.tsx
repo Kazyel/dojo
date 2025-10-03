@@ -3,6 +3,7 @@ import type { Post } from "@/lib/types";
 import { Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface PostCardProps {
   post: Post;
@@ -11,14 +12,21 @@ interface PostCardProps {
 
 export function PostCard({ post, index }: PostCardProps) {
   return (
-    <Link to={post.link} viewTransition={{ types: ["fade"] }}>
-      <motion.article
-        key={post.link}
-        animate={{
-          opacity: [0.9, 1],
-        }}
-        transition={{ delay: index * 0.075, duration: 0.3, ease: "easeInOut" }}
-        className="relative group flex flex-col rounded-xl justify-between bg-foreground px-4 py-5 w-full md:w-[300px] md:h-[350px] hover:bg-foreground/85 transition-colors duration-150"
+    <motion.article
+      key={post.link}
+      animate={{
+        opacity: [0.9, 1],
+      }}
+      transition={{ delay: index * 0.075, duration: 0.3, ease: "easeInOut" }}
+      className={cn(
+        "group rounded-xl bg-foreground px-4 py-5 w-full hover:bg-foreground/85 transition-colors duration-150",
+        "sm:w-[275px] sm:h-[300px] md:w-[300px] md:h-[350px]"
+      )}
+    >
+      <Link
+        to={post.link}
+        viewTransition={{ types: ["fade"] }}
+        className="flex flex-col justify-between h-full"
       >
         <div>
           <div className="flex justify-between gap-x-3">
@@ -39,7 +47,7 @@ export function PostCard({ post, index }: PostCardProps) {
         <p className="text-lg text-secondary tracking-tight font-light line-clamp-1 md:line-clamp-3 text-pretty">
           {post.description}
         </p>
-      </motion.article>
-    </Link>
+      </Link>
+    </motion.article>
   );
 }
