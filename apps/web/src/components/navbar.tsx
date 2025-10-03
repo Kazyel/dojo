@@ -59,27 +59,20 @@ export default function Navbar() {
         </h1>
       </Link>
 
-      <button
+      <motion.button
+        animate={{ scale: 1 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 1 }}
         onClick={() =>
           setTheme((prev) => (prev === "light" ? "dark" : "light"))
         }
       >
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={theme === "dark" ? "dark" : "light"}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "spring", duration: 0.1 }}
-          >
-            {theme === "dark" ? (
-              <MoonIcon className="size-5 text-foreground cursor-pointer" />
-            ) : (
-              <SunIcon className="size-5 text-foreground cursor-pointer" />
-            )}
-          </motion.span>
-        </AnimatePresence>
-      </button>
+        {theme === "dark" ? (
+          <MoonIcon className="size-5 text-foreground cursor-pointer mx-auto inline" />
+        ) : (
+          <SunIcon className="size-5 text-foreground cursor-pointer mx-auto inline" />
+        )}
+      </motion.button>
     </nav>
   );
 }

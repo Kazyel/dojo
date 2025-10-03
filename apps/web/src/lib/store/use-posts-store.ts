@@ -1,7 +1,8 @@
-import { create } from "zustand";
-import { subscribeWithSelector } from "zustand/middleware";
 import type { Tags, Years } from "@/components/posts/post-filters";
 import type { Post } from "@/lib/types";
+
+import { create } from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
 
 export type Filters = {
   tags: Set<Tags[number]>;
@@ -15,7 +16,6 @@ type PostsStore = {
   filteredPosts: Post[];
   paginatedPosts: Post[];
   totalPages: number;
-  currentPage: number;
   isFirstPage: boolean;
   isLastPage: boolean;
   totalPosts: number;
@@ -34,12 +34,17 @@ type PostsStore = {
   nextPage: () => void;
   previousPage: () => void;
   resetFilters: () => void;
-  _computeValues: () => void;
+  _computePagination: () => void;
+  _computeFilteredPosts: () => void;
 };
 
 const ITEMS_PER_PAGE = 6;
 
 const filterPosts = (posts: Post[], filters: Filters) => {
+  if (filters.tags.size === 0 && filters.year === null) {
+    return posts;
+  }
+
   return posts.filter((post) => {
     const matchesTags =
       filters.tags.size === 0 ||
@@ -49,20 +54,19 @@ const filterPosts = (posts: Post[], filters: Filters) => {
   });
 };
 
-const defaultFilters: Filters = {
+const createDefaultFilters = (): Filters => ({
   tags: new Set(),
   year: null,
-};
+});
 
 export const usePostsStore = create<PostsStore>()(
   subscribeWithSelector((set, get) => ({
     posts: [],
-    filters: defaultFilters,
+    filters: createDefaultFilters(),
     page: 0,
     filteredPosts: [],
     paginatedPosts: [],
     totalPages: 1,
-    currentPage: 0,
     isFirstPage: true,
     isLastPage: true,
     totalPosts: 0,
@@ -71,10 +75,11 @@ export const usePostsStore = create<PostsStore>()(
     initializePosts: (posts) => {
       set({
         posts,
-        filters: defaultFilters,
+        filters: createDefaultFilters(),
         page: 0,
       });
-      get()._computeValues();
+      get()._computeFilteredPosts();
+      get()._computePagination();
     },
 
     setFilters: (filtersOrUpdater) => {
@@ -84,7 +89,8 @@ export const usePostsStore = create<PostsStore>()(
           : filtersOrUpdater;
 
       set({ filters: newFilters, page: 0 });
-      get()._computeValues();
+      get()._computeFilteredPosts();
+      get()._computePagination();
     },
 
     toggleTag: (tag) => {
@@ -108,31 +114,37 @@ export const usePostsStore = create<PostsStore>()(
 
     setPage: (page) => {
       set({ page });
-      get()._computeValues();
+      get()._computePagination();
     },
 
     nextPage: () => {
       const { page, totalPages } = get();
       const lastPage = Math.max(0, totalPages - 1);
       set({ page: Math.min(page + 1, lastPage) });
-      get()._computeValues();
+      get()._computePagination();
     },
 
     previousPage: () => {
       const { page } = get();
       set({ page: Math.max(page - 1, 0) });
-      get()._computeValues();
+      get()._computePagination();
     },
 
     resetFilters: () => {
-      set({ filters: defaultFilters, page: 0 });
-      get()._computeValues();
+      set({ filters: createDefaultFilters(), page: 0 });
+      get()._computeFilteredPosts();
+      get()._computePagination();
     },
 
-    _computeValues: () => {
-      const { posts, filters, page } = get();
-
+    _computeFilteredPosts: () => {
+      const { posts, filters } = get();
       const filteredPosts = filterPosts(posts, filters);
+      set({ filteredPosts });
+    },
+
+    _computePagination: () => {
+      const { page, filteredPosts } = get();
+
       const totalPosts = filteredPosts.length;
       const totalPages = Math.max(1, Math.ceil(totalPosts / ITEMS_PER_PAGE));
       const lastPage = Math.max(0, totalPages - 1);
@@ -150,10 +162,8 @@ export const usePostsStore = create<PostsStore>()(
       const isLastPage = currentPage >= lastPage;
 
       set({
-        filteredPosts,
         paginatedPosts,
         totalPages,
-        currentPage,
         isFirstPage,
         isLastPage,
         totalPosts,

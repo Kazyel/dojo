@@ -1,8 +1,7 @@
-import type { Tags, Years } from "./post-filters";
-import { usePostsStore } from "@/lib/store/use-posts-store";
+import type { Tags, Years } from "@/components/posts/post-filters";
 
+import { usePostsStore } from "@/lib/store/use-posts-store";
 import { cn } from "@/lib/utils";
-import { useNavigate } from "@tanstack/react-router";
 
 interface PostTagsProps {
   type: "tag" | "year";
@@ -11,7 +10,6 @@ interface PostTagsProps {
 
 export function PostTag({ type, tag }: PostTagsProps) {
   const { filters, toggleTag, toggleYear } = usePostsStore();
-  const navigate = useNavigate({ from: "/" });
 
   const isYear = type === "year";
   const isTag = type === "tag";
