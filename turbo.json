@@ -20,6 +20,9 @@
     "test": {
       "cache": false,
       "dependsOn": ["^test"]
+    },
+    "test-ci": {
+      "dependsOn": ["^test-ci"]
     }
   }
 }

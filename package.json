@@ -12,7 +12,8 @@
     "dev:native": "turbo -F native dev",
     "dev:web": "turbo -F web dev",
     "dev:server": "turbo -F server dev",
-    "test": "turbo test"
+    "test": "turbo test",
+    "test-ci": "turbo test-ci"
   },
   "type": "module",
   "workspaces": [
