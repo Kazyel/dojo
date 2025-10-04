@@ -1,7 +1,7 @@
 {
   "name": "blog",
   "devDependencies": {
-    "turbo": "^2.5.4"
+    "turbo": "^2.5.8"
   },
   "packageManager": "bun@1.2.20",
   "private": true,
@@ -11,7 +11,8 @@
     "check-types": "turbo check-types",
     "dev:native": "turbo -F native dev",
     "dev:web": "turbo -F web dev",
-    "dev:server": "turbo -F server dev"
+    "dev:server": "turbo -F server dev",
+    "test": "turbo test"
   },
   "type": "module",
   "workspaces": [

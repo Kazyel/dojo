@@ -3,8 +3,8 @@ import type { Post } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 import { motion } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { ArrowUpRight } from "lucide-react";
 
 interface PostCardProps {
   post: Post;
