@@ -5,8 +5,8 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+import { Navbar } from "@/components/main/navbar";
+import { Footer } from "@/components/main/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 
