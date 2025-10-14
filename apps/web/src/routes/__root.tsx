@@ -12,9 +12,33 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import "@/index.css";
 
-export interface RouterAppContext {}
+export interface RouterAppContext {
+  language: string;
+}
+
+export const SUPPORTED_LANGUAGES = [
+  { code: "en", name: "English" },
+  { code: "pt", name: "Português" },
+] as const;
+
+const getUserLanguage = (): string => {
+  if (localStorage.getItem("preferred-language")) {
+    return localStorage.getItem("preferred-language")!;
+  }
+
+  const detected = navigator.language.split("-")[0];
+
+  if (SUPPORTED_LANGUAGES.map((lang) => lang.code).includes(detected as any)) {
+    return detected;
+  }
+  return "en";
+};
 
 export const Route = createRootRouteWithContext<RouterAppContext>()({
+  beforeLoad: () => {
+    const language = getUserLanguage();
+    return { language };
+  },
   component: RootComponent,
   head: () => ({
     meta: [

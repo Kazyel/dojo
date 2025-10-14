@@ -1,27 +1,43 @@
-import { NotFound } from "@/components/not-found";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
+import { NotFound } from "@/components/not-found";
+
 type PostModule = {
-  default: React.ComponentType<any>;
+  default: React.ComponentType;
 };
 
-const postModules = import.meta.glob<PostModule>("@/lib/content/mdx/*.mdx");
-const postModuleMap: Record<string, () => Promise<any>> = {};
+const POST_MODULES = import.meta.glob<PostModule>("@/lib/content/*/*.mdx");
 
-for (const fullPath in postModules) {
-  const postName = fullPath.match(/\/([^/]+)\.mdx$/)?.[1];
-  if (postName) {
-    postModuleMap[postName] = postModules[fullPath] as any;
-  }
-}
+const createPostModuleMap = () => {
+  return Object.fromEntries(
+    Object.entries(POST_MODULES)
+      .map(([path, loader]) => {
+        const match = path.match(/\/([^/]+)\/([^/]+)\.mdx$/);
+
+        if (match) {
+          const [, language, postName] = match;
+          return [`${language}:${postName}`, loader];
+        }
+
+        return null;
+      })
+      .filter(Boolean) as [string, () => Promise<PostModule>][]
+  );
+};
+
+const POST_MODULE_MAP = createPostModuleMap();
+
+const loadContent = (postName: string, language = "en") => {
+  return POST_MODULE_MAP[`${language}:${postName}`];
+};
 
 export const Route = createFileRoute("/p/$postName")({
-  loader: async ({ params }) => {
-    const importFn = postModuleMap[params.postName];
+  loader: async ({ params, context }) => {
+    const importFn = loadContent(params.postName, context.language);
     if (!importFn) {
       throw notFound();
     }
-    return (await importFn()) as PostModule;
+    return await importFn();
   },
   component: RouteComponent,
   notFoundComponent: () => <NotFound isPost={true} />,

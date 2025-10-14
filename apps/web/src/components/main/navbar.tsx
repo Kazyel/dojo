@@ -1,43 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTheme } from "next-themes";
-import { cn } from "@/lib/utils";
-
 import { motion } from "motion/react";
-import { MoonIcon, SunIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { MoonIcon, SunIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { useOnScroll } from "@/lib/hooks/use-on-scroll";
+
+import { LanguageMenu } from "@/components/main/language-menu";
 
 export function Navbar() {
+  const [showNavbar, setShowNavbar] = useState(true);
+
+  const navRef = useRef<HTMLElement | null>(null);
   const { theme, setTheme } = useTheme();
 
-  const [showNavbar, setShowNavbar] = useState(true);
-  const navRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    if (!navRef.current) return;
-    let lastScroll = 0;
-    let ticking = false;
-
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (currentScroll > lastScroll) {
-            setShowNavbar(false);
-          } else {
-            setShowNavbar(true);
-          }
-
-          lastScroll = currentScroll;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useOnScroll((bool) => setShowNavbar(bool!));
 
   return (
     <nav
@@ -59,20 +37,24 @@ export function Navbar() {
         </h1>
       </Link>
 
-      <motion.button
-        animate={{ scale: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 1 }}
-        onClick={() =>
-          setTheme((prev) => (prev === "light" ? "dark" : "light"))
-        }
-      >
-        {theme === "dark" ? (
-          <MoonIcon className="size-5 text-foreground cursor-pointer mx-auto inline" />
-        ) : (
-          <SunIcon className="size-5 text-foreground cursor-pointer mx-auto inline" />
-        )}
-      </motion.button>
+      <div className="space-x-4">
+        <LanguageMenu />
+
+        <motion.button
+          animate={{ scale: 1 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 1 }}
+          onClick={() =>
+            setTheme((prev) => (prev === "light" ? "dark" : "light"))
+          }
+        >
+          {theme === "dark" ? (
+            <MoonIcon className="size-5 text-foreground cursor-pointer mx-auto inline" />
+          ) : (
+            <SunIcon className="size-5 text-foreground cursor-pointer mx-auto inline" />
+          )}
+        </motion.button>
+      </div>
     </nav>
   );
 }
