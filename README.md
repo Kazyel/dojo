@@ -1,6 +1,10 @@
-# 🥋 Zen Blog
+# Kazyel's Nook
 
-A digital dojo for words and code — a place of practice, reflection, and creation, where each post is a quiet step on the path.
+My corner of the internet where I share thoughts on code, learning, and life as a developer.
+
+## About
+
+A personal blog documenting my journey as a web developer. Here I write about programming, share what I'm learning, and reflect on my experiences building things.
 
 ## ⚡ Tech Stack
 

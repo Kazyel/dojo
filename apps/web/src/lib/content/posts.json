@@ -1,10 +1,10 @@
 [
   {
     "id": 1,
-    "title": "First Post",
-    "description": "This is the content of the first post.",
-    "slug": "first-post",
-    "tags": ["coding", "tips"],
+    "title": "Why I started this blog",
+    "description": "I talk about the motivation behind starting this blog and what I hope to achieve with it.",
+    "slug": "why-i-started-this-blog",
+    "tags": ["random talk", "thoughts"],
     "year": 2025
   }
 ]
