@@ -1,10 +1,11 @@
+import { motion } from "motion/react";
+import { Calendar, ListRestart, Tags } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 import { usePostsStore } from "@/lib/store/use-posts-store";
 
-import { motion } from "motion/react";
-import { PostTag } from "@/components/posts/post-tags";
-import { Calendar, ListRestart, Tags } from "lucide-react";
-import { useIsMobile } from "@/lib/hooks/use-is-mobile";
-import { cn } from "@/lib/utils";
+import { PostTag } from "@/components/main/posts/post-tags";
 
 export type Tags = (typeof TAGS)[number][];
 export type Years = (typeof YEARS)[number][];
@@ -43,7 +44,7 @@ export function PostFilters() {
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-5">
+      <div className="flex flex-wrap gap-4 mb-5">
         <div className="w-full flex items-center gap-x-2">
           <Tags className="size-5 text-acc-red" />
 
@@ -52,12 +53,14 @@ export function PostFilters() {
           </h3>
         </div>
 
-        {TAGS.map((tag) => {
-          return <PostTag key={tag} type="tag" tag={tag} />;
-        })}
+        <div className="flex flex-wrap gap-2.5">
+          {TAGS.map((tag) => {
+            return <PostTag key={tag} type="tag" tag={tag} />;
+          })}
+        </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-4">
         <div className="w-full flex items-center gap-x-2">
           <Calendar className="size-5 text-acc-red" />
 
@@ -66,9 +69,11 @@ export function PostFilters() {
           </h3>
         </div>
 
-        {YEARS.map((year) => {
-          return <PostTag key={year} type="year" tag={year} />;
-        })}
+        <div className="flex flex-wrap gap-2.5">
+          {YEARS.map((year) => {
+            return <PostTag key={year} type="year" tag={year} />;
+          })}
+        </div>
       </div>
     </aside>
   );

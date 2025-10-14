@@ -1,8 +1,9 @@
-import type { Tags, Years } from "@/components/posts/post-filters";
-import type { Post } from "@/lib/types";
-
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
+
+import type { Post } from "@/lib/types";
+
+import type { Tags, Years } from "@/components/main/posts/post-filters";
 
 export type Filters = {
   tags: Set<Tags[number]>;

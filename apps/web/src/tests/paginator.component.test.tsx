@@ -1,20 +1,24 @@
+import { expect, test, describe } from "vitest";
+
+import { screen, render } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
+
 import type { Post } from "@/lib/types";
-import type { Tags } from "@/components/posts/post-filters";
-
-import { screen, cleanup, render } from "@testing-library/react";
-import { expect, test, describe, afterEach } from "vitest";
-
 import { usePostsStore } from "@/lib/store/use-posts-store";
+
+import type { Tags } from "@/components/main/posts/post-filters";
 import { Paginator } from "@/components/main/paginator";
 
-afterEach(() => {
-  cleanup();
-});
-
-const renderAndInitialize = (posts: Post[]) => {
+const startPaginator = (posts: Post[]) => {
   const { initializePosts } = usePostsStore.getState();
   initializePosts(posts);
-  return render(<Paginator />);
+
+  const rendered = render(<Paginator />);
+  const user = userEvent.setup();
+  return {
+    rendered,
+    user,
+  };
 };
 
 const makePosts = (count: number, year = 2025): Post[] =>
@@ -32,27 +36,25 @@ const makePosts = (count: number, year = 2025): Post[] =>
 
 describe("Paginator Component", () => {
   test("Displays correct post counts", async () => {
-    renderAndInitialize(makePosts(10));
-
-    await screen.findByText("6 of 10 posts");
+    startPaginator(makePosts(10));
+    screen.getByText("6 of 10 posts");
   });
 
   test("Next and previous buttons work", async () => {
-    renderAndInitialize(makePosts(10));
+    const { user } = startPaginator(makePosts(10));
 
-    const [prevButton, nextButton] = (await screen.findAllByRole(
+    const [prevButton, nextButton] = screen.getAllByRole(
       "button"
-    )) as HTMLButtonElement[];
+    ) as HTMLButtonElement[];
 
-    nextButton.click();
-    expect(prevButton.disabled).toBe(true);
-    expect(nextButton.disabled).toBe(false);
+    await user.click(nextButton);
+    expect(screen.getByText("10 of 10 posts")).toBeInTheDocument();
+    expect(prevButton).toBeEnabled();
+    expect(nextButton).toBeDisabled();
 
-    expect(await screen.findByText("10 of 10 posts"));
-
-    prevButton.click();
-    expect(prevButton.disabled).toBe(false);
-    expect(nextButton.disabled).toBe(true);
-    expect(await screen.findByText("6 of 10 posts"));
+    await user.click(prevButton);
+    expect(screen.getByText("6 of 10 posts")).toBeInTheDocument();
+    expect(prevButton).toBeDisabled();
+    expect(nextButton).toBeEnabled();
   });
 });

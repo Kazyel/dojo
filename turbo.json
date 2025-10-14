@@ -22,7 +22,7 @@
       "dependsOn": ["^test"]
     },
     "test-ci": {
-      "dependsOn": ["^test-ci"]
+      "dependsOn": ["^test:ci"]
     }
   }
 }

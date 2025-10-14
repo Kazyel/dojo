@@ -1,13 +1,16 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import ReactDOM from "react-dom/client";
-import Loader from "./components/loader";
-import { routeTree } from "./routeTree.gen";
-import { NotFound } from "./components/not-found";
+import { routeTree } from "@/routeTree.gen";
+
+import Loader from "@/components/main/loader";
+import { NotFound } from "@/components/main/not-found";
 
 const router = createRouter({
   routeTree,
   defaultPreload: "intent",
-  context: {},
+  context: {
+    language: "en",
+  },
   defaultPendingComponent: () => <Loader />,
   defaultNotFoundComponent: () => <NotFound />,
 });

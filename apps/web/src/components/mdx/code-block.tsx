@@ -1,6 +1,7 @@
 import { useRef, useState, type JSX } from "react";
 import { CopyCheckIcon, CopyIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+
 import { cn } from "@/lib/utils";
 
 interface CodeBlockProps {

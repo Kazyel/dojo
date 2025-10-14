@@ -1,16 +1,18 @@
-import type { Post } from "@/lib/types";
-import type { Tags } from "@/components/posts/post-filters";
-
-import { usePostsStore } from "@/lib/store/use-posts-store";
 import { renderHook, act } from "@testing-library/react";
 import { expect, test } from "vitest";
 import { describe } from "node:test";
 
+import type { Post } from "@/lib/types";
+import { usePostsStore } from "@/lib/store/use-posts-store";
+
+import type { Tags } from "@/components/main/posts/post-filters";
+
 const makePosts = (count: number, year = 2025): Post[] =>
   Array.from({ length: count }).map((_, i) => ({
+    id: i,
     title: `p${i}`,
     description: "desc",
-    link: `/p/${i}`,
+    slug: `p${i}`,
     year: year,
     tags:
       i % 2 === 0

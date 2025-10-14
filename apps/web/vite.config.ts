@@ -2,7 +2,6 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import { defineConfig } from "vite";
 import path from "node:path";
 
-// Plugins
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import mdx from "@mdx-js/rollup";
@@ -31,7 +30,8 @@ export default defineConfig({
     },
   },
   test: {
+    globals: true,
     environment: "jsdom",
-    setupFiles: "/src/tests/setup/setup.ts",
+    setupFiles: "./vitest.setup.ts",
   },
 });

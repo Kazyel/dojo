@@ -1,8 +1,10 @@
-import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { usePostsStore } from "../store/use-posts-store";
-import type { Years } from "@/components/posts/post-filters";
-import { sanitizeInitialTags } from "../utils";
+import { useNavigate, useSearch } from "@tanstack/react-router";
+
+import { sanitizeInitialTags } from "@/lib/utils";
+import { usePostsStore } from "@/lib/store/use-posts-store";
+
+import type { Years } from "@/components/main/posts/post-filters";
 
 type PageSearch = {
   tags?: string;
