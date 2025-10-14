@@ -1,11 +1,11 @@
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import {
   HeadContent,
   Outlet,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
-import { Navbar } from "@/components/main/navbar";
+import { Navbar } from "@/components/main/navbar/navbar";
 import { Footer } from "@/components/main/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";

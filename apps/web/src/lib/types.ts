@@ -1,4 +1,4 @@
-import type { Tags } from "@/components/posts/post-filters";
+import type { Tags } from "@/components/main/posts/post-filters";
 
 export type Post = {
   id: number;

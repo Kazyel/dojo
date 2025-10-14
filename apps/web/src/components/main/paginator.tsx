@@ -1,7 +1,9 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PostFiltersModal } from "../posts/post-filters-modal";
+
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 import { usePostsStore } from "@/lib/store/use-posts-store";
+
+import { PostFiltersModal } from "@/components/main/posts/post-filters-modal";
 
 export function Paginator() {
   const isMobile = useIsMobile();
@@ -16,14 +18,14 @@ export function Paginator() {
   } = usePostsStore();
 
   return (
-    <div className="py-4 flex flex-col w-full">
+    <div className="py-4 space-y-2 w-full">
       <div className="flex items-center">
         <h2 className="font-extrabold tracking-tighter text-4xl font-unbounded text-foreground">
           Posts
         </h2>
 
         <div className="flex items-center justify-between w-full">
-          <div className="flex ml-3 gap-x-1.5">
+          <div className="flex ml-4 gap-x-1.5">
             <button
               onClick={previousPage}
               disabled={isFirstPage}

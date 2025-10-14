@@ -5,12 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3001",
-    "test": "vitest run --watch",
-    "test-ci": "vitest run",
     "build": "vite build",
     "serve": "vite preview",
     "start": "vite",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test": "vitest run --watch",
+    "test:ci": "vitest run"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -21,6 +21,7 @@
     "@tanstack/react-form": "^1.12.3",
     "@tanstack/react-query": "^5.85.5",
     "@tanstack/react-router": "^1.114.25",
+    "@testing-library/user-event": "^14.6.1",
     "@types/mdx": "^2.0.13",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -44,7 +45,7 @@
     "@tanstack/react-query-devtools": "^5.85.5",
     "@tanstack/react-router-devtools": "^1.114.27",
     "@tanstack/router-plugin": "^1.114.27",
-    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/mdx": "^2.0.13",
@@ -54,6 +55,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/ui": "3.2.4",
     "jsdom": "^27.0.0",
+    "playwright": "^1.56.0",
     "postcss": "^8.5.3",
     "shiki": "^3.13.0",
     "tailwindcss": "^4.0.15",

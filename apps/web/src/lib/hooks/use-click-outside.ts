@@ -10,7 +10,6 @@ export function useClickOutside<T extends HTMLElement>(callback: () => void) {
       }
     };
 
-    // Add slight delay to prevent immediate trigger
     const timeoutId = setTimeout(() => {
       document.addEventListener("mousedown", handleClickOutside);
     }, 0);

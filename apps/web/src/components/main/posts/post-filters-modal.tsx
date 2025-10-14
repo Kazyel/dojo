@@ -1,3 +1,5 @@
+import { ListFilterPlus } from "lucide-react";
+
 import {
   Dialog,
   DialogContent,
@@ -6,9 +8,7 @@ import {
   DialogPortal,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-import { PostFilters } from "./post-filters";
-import { ListFilterPlus } from "lucide-react";
+import { PostFilters } from "@/components/main/posts/post-filters";
 
 export function PostFiltersModal() {
   return (

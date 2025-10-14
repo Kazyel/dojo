@@ -7,7 +7,7 @@ import { MoonIcon, SunIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnScroll } from "@/lib/hooks/use-on-scroll";
 
-import { LanguageMenu } from "@/components/main/language-menu";
+import { LanguageMenu } from "@/components/main/navbar/language-menu";
 
 export function Navbar() {
   const [showNavbar, setShowNavbar] = useState(true);
@@ -28,8 +28,8 @@ export function Navbar() {
       <Link to={"/"} viewTransition={{ types: ["fade"] }}>
         <h1
           className={cn(
-            "relative text-foreground ml-7 flex-1 font-extrabold tracking-tighter cursor-pointer font-unbounded border-l pl-2",
-            "before:absolute before:-left-6 before:text-base before:content-['新'] transition-all duration-150",
+            "relative text-foreground ml-6 md:ml-7 text-base md:text-lg flex-1 font-extrabold tracking-tighter cursor-pointer font-unbounded border-l-2 pl-2",
+            "before:absolute before:-left-6 md:before:-left-7 before:text-base md:before:text-lg before:content-['新'] transition-all duration-150",
             "hover:text-foreground/60"
           )}
         >
@@ -42,16 +42,15 @@ export function Navbar() {
 
         <motion.button
           animate={{ scale: 1 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() =>
             setTheme((prev) => (prev === "light" ? "dark" : "light"))
           }
         >
           {theme === "dark" ? (
-            <MoonIcon className="size-5 text-foreground cursor-pointer mx-auto inline" />
+            <MoonIcon className="size-5 md:size-6 text-foreground cursor-pointer mx-auto inline" />
           ) : (
-            <SunIcon className="size-5 text-foreground cursor-pointer mx-auto inline" />
+            <SunIcon className="size-5 md:size-6 text-foreground cursor-pointer mx-auto inline" />
           )}
         </motion.button>
       </div>

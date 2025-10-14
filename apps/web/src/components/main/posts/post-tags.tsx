@@ -1,7 +1,7 @@
-import type { Tags, Years } from "@/components/posts/post-filters";
-
-import { usePostsStore } from "@/lib/store/use-posts-store";
 import { cn } from "@/lib/utils";
+import { usePostsStore } from "@/lib/store/use-posts-store";
+
+import type { Tags, Years } from "@/components/main/posts/post-filters";
 
 interface PostTagsProps {
   type: "tag" | "year";

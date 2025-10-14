@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
-import { NotFound } from "@/components/not-found";
+import { NotFound } from "@/components/main/not-found";
 
 type PostModule = {
   default: React.ComponentType;

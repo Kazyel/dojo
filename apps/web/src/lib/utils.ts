@@ -1,7 +1,7 @@
-import type { Tags } from "@/components/posts/post-filters";
-
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+
+import type { Tags } from "@/components/main/posts/post-filters";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

@@ -4,7 +4,7 @@ import { Portfolio } from "@/components/svg/terminal";
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-foreground/15 mt-12 mb-6">
+    <footer className="w-full border-t border-foreground/15 mt-16 mb-6">
       <div className="mx-auto flex flex-col gap-y-5 items-center justify-center max-w-5xl px-6 py-10 md:px-8 text-center text-sm text-foreground/75">
         <p>&copy; {new Date().getFullYear()} Kazyel. All rights reserved.</p>
 
