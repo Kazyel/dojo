@@ -29,11 +29,12 @@ export function PostTag({ type, tag }: PostTagsProps) {
   return (
     <button
       className={cn(
-        "relative shrink-0 px-2 py-0.5 text-base italic font-normal text-foreground/85 font-mono bg-acc-gold/35 tracking-tighter rounded border border-acc-gold/75 cursor-pointer",
-        "hover:bg-acc-gold/25 transition-all duration-100",
+        "relative shrink-0 px-2 py-1 text-base font-mono rounded cursor-pointer tracking-tight",
+        "bg-acc-gold/40 dark:text-red-200 dark:bg-acc-red/15",
+        "hover:bg-acc-gold/70 dark:hover:bg-acc-red/35 transition-all duration-100",
 
         isSelected() &&
-          "text-acc-red bg-acc-red/15 border-acc-red/50 hover:bg-acc-red/10"
+          "bg-acc-gold/70 hover:bg-acc-gold/40 dark:bg-acc-red/35 dark:hover:bg-acc-red/15 font-semibold"
       )}
       onClick={() => {
         if (isTag) {

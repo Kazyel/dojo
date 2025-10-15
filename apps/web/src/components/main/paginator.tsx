@@ -20,7 +20,7 @@ export function Paginator() {
   return (
     <div className="py-4 space-y-2 w-full">
       <div className="flex items-center">
-        <h2 className="font-extrabold tracking-tighter text-4xl font-unbounded text-foreground">
+        <h2 className="font-semibold tracking-tighter text-3xl sm:text-4xl font-unbounded text-foreground">
           Posts
         </h2>
 
@@ -47,7 +47,7 @@ export function Paginator() {
         </div>
       </div>
 
-      <p className="text-primary/75 font-light text-lg">
+      <p className="text-primary/75 font-light text-base sm:text-lg">
         {currentPosts} of {filteredPosts.length} posts
       </p>
     </div>

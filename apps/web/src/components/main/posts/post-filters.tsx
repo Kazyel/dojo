@@ -18,14 +18,14 @@ export function PostFilters() {
   const isMobile = useIsMobile();
 
   return (
-    <aside className="border-foreground h-fit flex flex-col sticky col-span-1 top-4 pr-6">
+    <aside className="border-foreground h-fit flex flex-col sticky col-span-1 top-4 bg-acc-gold/15 dark:bg-acc-red/5 p-6 rounded-md">
       <div
         className={cn(
           `flex items-center justify-between mb-4`,
           isMobile && `justify-normal gap-x-4`
         )}
       >
-        <h2 className="text-foreground text-3xl font-extrabold tracking-tight font-unbounded">
+        <h2 className="text-foreground text-3xl font-semibold tracking-tighter font-unbounded">
           Filters
         </h2>
 
@@ -44,35 +44,37 @@ export function PostFilters() {
         )}
       </div>
 
-      <div className="flex flex-wrap gap-4 mb-5">
-        <div className="w-full flex items-center gap-x-2">
-          <Tags className="size-5 text-acc-red" />
+      <div className="space-y-7">
+        <div className="flex flex-wrap gap-4">
+          <div className="w-full flex items-center gap-x-2">
+            <Tags className="size-6 text-acc-red" />
 
-          <h3 className="font-semibold font-unbounded text-foreground/90">
-            Tags
-          </h3>
+            <h3 className="font-medium font-unbounded text-foreground text-lg tracking-tight">
+              Tags
+            </h3>
+          </div>
+
+          <div className="flex flex-wrap gap-2.5">
+            {TAGS.map((tag) => {
+              return <PostTag key={tag} type="tag" tag={tag} />;
+            })}
+          </div>
         </div>
 
-        <div className="flex flex-wrap gap-2.5">
-          {TAGS.map((tag) => {
-            return <PostTag key={tag} type="tag" tag={tag} />;
-          })}
-        </div>
-      </div>
+        <div className="flex flex-wrap gap-4">
+          <div className="w-full flex items-center gap-x-2">
+            <Calendar className="size-6 text-acc-red" />
 
-      <div className="flex flex-wrap gap-4">
-        <div className="w-full flex items-center gap-x-2">
-          <Calendar className="size-5 text-acc-red" />
+            <h3 className="font-medium font-unbounded text-foreground text-lg tracking-tight">
+              Years
+            </h3>
+          </div>
 
-          <h3 className="font-semibold font-unbounded text-foreground/90">
-            Years
-          </h3>
-        </div>
-
-        <div className="flex flex-wrap gap-2.5">
-          {YEARS.map((year) => {
-            return <PostTag key={year} type="year" tag={year} />;
-          })}
+          <div className="flex flex-wrap gap-2.5">
+            {YEARS.map((year) => {
+              return <PostTag key={year} type="year" tag={year} />;
+            })}
+          </div>
         </div>
       </div>
     </aside>
