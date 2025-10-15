@@ -1,15 +1,20 @@
 import { expect, test, describe, vi } from "vitest";
-
 import { screen, render } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 
 import { LanguageMenu } from "@/components/main/navbar/language-menu";
 
+vi.mock("@tanstack/react-router", () => ({
+  useRouter: () => ({
+    invalidate: vi.fn().mockResolvedValue(undefined),
+  }),
+}));
+
 const startLanguageMenu = () => {
-  const rendered = render(<LanguageMenu />);
+  const renderResult = render(<LanguageMenu />);
   const user = userEvent.setup();
   return {
-    rendered,
+    renderResult,
     user,
   };
 };
@@ -17,35 +22,49 @@ const startLanguageMenu = () => {
 describe("LanguageMenu Component", () => {
   test("Renders LanguageMenu and toggles menu", async () => {
     const { user } = startLanguageMenu();
-    const langBtn = screen.getByRole("button");
+    const menuBtn = screen.getByRole("button");
 
-    await user.click(langBtn);
+    await user.click(menuBtn);
     expect(screen.getByRole("list")).toBeInTheDocument();
 
-    await user.click(langBtn);
+    await user.click(menuBtn);
     expect(screen.queryByRole("list")).not.toBeInTheDocument();
   });
 
-  test("Selects a language and reloads the page", async () => {
+  test("Selects a language and updates localStorage", async () => {
     const { user } = startLanguageMenu();
-    const langBtn = screen.getByRole("button");
+    localStorage.setItem("preferred-language", "en");
 
-    const reloadMock = vi.fn();
-    delete (window as any).location;
-    (window as any).location = { reload: reloadMock };
+    const menuBtn = screen.getByRole("button");
+    await user.click(menuBtn);
 
-    await user.click(langBtn);
-    const englishItem = screen.getByText("English");
-    await user.click(englishItem);
-
-    expect(localStorage.getItem("preferred-language")).toBe("en");
-    expect(reloadMock).toHaveBeenCalled();
-
-    await user.click(langBtn);
-    const portugueseItem = screen.getByText("Português");
+    const portugueseItem = screen.getByRole("button", { name: /português/i });
     await user.click(portugueseItem);
+    expect(localStorage.getItem("preferred-language")).toBe("pt");
+
+    await user.click(menuBtn);
+    const updatedPortugueseItem = screen.getByRole("button", {
+      name: /português/i,
+    });
+    expect(updatedPortugueseItem).toBeDisabled();
+  });
+
+  test("Changes from portuguese to english", async () => {
+    const { user } = startLanguageMenu();
 
     expect(localStorage.getItem("preferred-language")).toBe("pt");
-    expect(reloadMock).toHaveBeenCalled();
+
+    const menuBtn = screen.getByRole("button");
+    await user.click(menuBtn);
+
+    const englishItem = screen.getByRole("button", { name: /english/i });
+    await user.click(englishItem);
+    expect(localStorage.getItem("preferred-language")).toBe("en");
+
+    await user.click(menuBtn);
+    const updatedEnglishItem = screen.getByRole("button", {
+      name: /english/i,
+    });
+    expect(updatedEnglishItem).toBeDisabled();
   });
 });

@@ -7,6 +7,7 @@ import {
   DialogDescription,
   DialogPortal,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { PostFilters } from "@/components/main/posts/post-filters";
 
@@ -16,10 +17,12 @@ export function PostFiltersModal() {
       <DialogTrigger className="text-foreground">
         <ListFilterPlus className="size-7 stroke-2 cursor-pointer" />
       </DialogTrigger>
+
       <DialogPortal>
         <DialogTitle>Filters</DialogTitle>
         <DialogDescription>A dialog to filter out posts.</DialogDescription>
-        <DialogContent className="border-none p-6">
+
+        <DialogContent className="border-none p-0">
           <PostFilters />
         </DialogContent>
       </DialogPortal>

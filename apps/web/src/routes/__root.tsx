@@ -5,10 +5,12 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
+import { ThemeProvider } from "@/lib/providers/theme-provider";
+import { getUserLanguage } from "@/lib/utils";
+
 import { Navbar } from "@/components/main/navbar/navbar";
 import { Footer } from "@/components/main/footer";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/theme-provider";
 
 import "@/index.css";
 
@@ -16,25 +18,7 @@ export interface RouterAppContext {
   language: string;
 }
 
-export const SUPPORTED_LANGUAGES = [
-  { code: "en", name: "English" },
-  { code: "pt", name: "Português" },
-] as const;
-
-const getUserLanguage = (): string => {
-  if (localStorage.getItem("preferred-language")) {
-    return localStorage.getItem("preferred-language")!;
-  }
-
-  const detected = navigator.language.split("-")[0];
-
-  if (SUPPORTED_LANGUAGES.map((lang) => lang.code).includes(detected as any)) {
-    return detected;
-  }
-  return "en";
-};
-
-export const Route = createRootRouteWithContext<RouterAppContext>()({
+const Route = createRootRouteWithContext<RouterAppContext>()({
   beforeLoad: () => {
     const language = getUserLanguage();
     return { language };

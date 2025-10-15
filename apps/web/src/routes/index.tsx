@@ -36,9 +36,9 @@ function HomeComponent() {
 
   return (
     <main className="mx-auto max-w-5xl px-8 py-6 font-merriweather">
-      <section className="mt-6 space-y-10">
-        <div className="space-y-4">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground">
+      <section className="mt-0 sm:mt-6 space-y-10">
+        <div className="space-y-4 bg-foreground/5 p-6 rounded-md">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-foreground font-unbounded tracking-tighter">
             Hey, welcome.
           </h2>
 
@@ -59,7 +59,7 @@ function HomeComponent() {
       </section>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative">
-        <div className="flex items-center justify-center gap-4.5 flex-wrap col-span-1 sm:col-span-2 lg:col-span-2 lg:justify-start">
+        <div className="flex items-center justify-center gap-5 flex-wrap col-span-1 sm:col-span-2 lg:col-span-2 lg:justify-start">
           {postsData.current.length === 0 && (
             <p className="font-semibold text-lg text-foreground py-10 mx-auto">
               No posts available.
