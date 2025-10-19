@@ -12,13 +12,11 @@ import { Navbar } from "@/components/main/navbar/navbar";
 import { Footer } from "@/components/main/footer";
 import { Toaster } from "@/components/ui/sonner";
 
-import "@/index.css";
-
 export interface RouterAppContext {
   language: string;
 }
 
-const Route = createRootRouteWithContext<RouterAppContext>()({
+export const Route = createRootRouteWithContext<RouterAppContext>()({
   beforeLoad: () => {
     const language = getUserLanguage();
     return { language };

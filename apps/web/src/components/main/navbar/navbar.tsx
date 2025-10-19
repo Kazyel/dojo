@@ -1,19 +1,16 @@
 import { useRef, useState } from "react";
-import { useTheme } from "next-themes";
-import { motion } from "motion/react";
 import { Link } from "@tanstack/react-router";
-import { MoonIcon, SunIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useOnScroll } from "@/lib/hooks/use-on-scroll";
 
 import { LanguageMenu } from "@/components/main/navbar/language-menu";
+import { ThemeChanger } from "@/components/main/navbar/theme-changer";
 
 export function Navbar() {
   const [showNavbar, setShowNavbar] = useState(true);
 
   const navRef = useRef<HTMLElement | null>(null);
-  const { theme, setTheme } = useTheme();
 
   useOnScroll((bool) => setShowNavbar(bool!));
 
@@ -39,20 +36,7 @@ export function Navbar() {
 
       <div className="space-x-4">
         <LanguageMenu />
-
-        <motion.button
-          animate={{ scale: 1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() =>
-            setTheme((prev) => (prev === "light" ? "dark" : "light"))
-          }
-        >
-          {theme === "dark" ? (
-            <MoonIcon className="size-5 md:size-6 text-foreground cursor-pointer mx-auto inline" />
-          ) : (
-            <SunIcon className="size-5 md:size-6 text-foreground cursor-pointer mx-auto inline" />
-          )}
-        </motion.button>
+        <ThemeChanger />
       </div>
     </nav>
   );

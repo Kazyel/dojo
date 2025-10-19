@@ -1,0 +1,16 @@
+{
+  "home": {
+    "welcome_heading": "Hey, welcome.",
+    "my_corner": "This is my little corner of the internet where I share my thoughts, experiences, and what I'm learning about coding, technology, and life in general.",
+    "greeting": "If you've found your way here, I hope you find something useful, interesting, inspiring or funny. Feel free to reach out if you have any questions, suggestions, or just want to say hi! 👋"
+  },
+  "posts": {
+    "no_posts_found": "No posts available.",
+    "filters": "Filters",
+    "years": "Years",
+    "post_count": "{{currentPosts}} of {{filteredPosts.length}} posts"
+  },
+  "footer": {
+    "copyright": "All rights reserved."
+  }
+}
