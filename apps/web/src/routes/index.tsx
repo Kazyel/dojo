@@ -1,6 +1,7 @@
-import { z } from "zod";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 
 import type { Post } from "@/lib/types";
 import postsJson from "@/lib/content/posts.json";
@@ -25,8 +26,9 @@ export const Route = createFileRoute("/")({
 function HomeComponent() {
   const postsData = useRef(postsJson as unknown as Post[]);
   const isMobile = useIsMobile();
+  const { t } = useTranslation();
 
-  const { initializePosts, paginatedPosts } = usePostsStore();
+  const { initializePosts, paginatedPosts, currentPosts } = usePostsStore();
 
   useEffect(() => {
     initializePosts(postsData.current);
@@ -39,19 +41,15 @@ function HomeComponent() {
       <section className="mt-0 sm:mt-6 space-y-10">
         <div className="space-y-4 bg-foreground/5 p-6 rounded-md">
           <h2 className="text-3xl sm:text-4xl font-semibold text-foreground font-unbounded tracking-tighter">
-            Hey, welcome.
+            {t("home.welcome_heading")}
           </h2>
 
           <p className="text-base sm:text-xl text-muted-foreground text-pretty tracking-wide font-light">
-            This is my little corner of the internet where I share my thoughts,
-            experiences, and what I'm learning about coding, technology, and
-            life in general.
+            {t("home.my_corner")}
           </p>
 
           <p className="text-base sm:text-xl text-muted-foreground text-pretty tracking-wide font-light">
-            If you've found your way here, I hope you find something useful,
-            interesting, inspiring or funny. Feel free to reach out if you have
-            any questions, suggestions, or just want to say hi!
+            {t("home.greeting")}
           </p>
         </div>
 
@@ -60,9 +58,9 @@ function HomeComponent() {
 
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative">
         <div className="flex items-center justify-center gap-5 flex-wrap col-span-1 sm:col-span-2 lg:col-span-2 lg:justify-start">
-          {postsData.current.length === 0 && (
+          {postsData.current.length === 0 || !currentPosts && (
             <p className="font-semibold text-lg text-foreground py-10 mx-auto">
-              No posts available.
+              {t("posts.no_posts_found")}
             </p>
           )}
 

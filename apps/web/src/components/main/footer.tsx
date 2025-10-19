@@ -1,13 +1,17 @@
+import { useTranslation } from "react-i18next";
+
 import { Github } from "@/components/svg/github";
 import { LinkedIn } from "@/components/svg/linkedin";
 import { Portfolio } from "@/components/svg/terminal";
 
 export function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="w-full border-t border-foreground/15 mt-16 mb-6">
       <div className="mx-auto flex flex-col gap-y-5 items-center justify-center max-w-5xl px-6 py-10 md:px-8 text-center">
         <p className="text-sm text-foreground/80 font-merriweather">
-          &copy; {new Date().getFullYear()} Kazyel. All rights reserved.
+          &copy; {new Date().getFullYear()} Kazyel. {t("footer.copyright")}
         </p>
 
         <div className="flex justify-center items-center gap-x-7">

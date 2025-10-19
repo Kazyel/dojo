@@ -1,7 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import type { Tags } from "@/components/main/posts/post-filters";
 import { enUsFlag } from "@/components/svg/en-us";
 import { ptBrFlag } from "@/components/svg/pt-br";
 
@@ -10,9 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const sanitizeInitialTags = (tags: string) => {
-  return new Set(tags.split(",").map((tag) => tag.trim().toLowerCase())) as Set<
-    Tags[number]
-  >;
+  return tags.split(",").map((tag) => tag.trim().toLowerCase());
 };
 
 export const SUPPORTED_LANGUAGES = [

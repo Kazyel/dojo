@@ -1,3 +1,4 @@
+import { Trans } from "react-i18next";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
@@ -48,7 +49,9 @@ export function Paginator() {
       </div>
 
       <p className="text-primary/75 font-light text-base sm:text-lg">
-        {currentPosts} of {filteredPosts.length} posts
+        <Trans i18nKey="posts.post_count">
+          {{ currentPosts }} of {{ filteredPosts }} posts.
+        </Trans>
       </p>
     </div>
   );

@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { Calendar, ListRestart, Tags } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -15,6 +16,7 @@ const YEARS = [2025] as const;
 
 export function PostFilters() {
   const { filters, resetFilters } = usePostsStore();
+  const { t } = useTranslation();
   const isMobile = useIsMobile();
 
   return (
@@ -26,7 +28,7 @@ export function PostFilters() {
         )}
       >
         <h2 className="text-foreground text-3xl font-semibold tracking-tighter font-unbounded">
-          Filters
+          {t("posts.filters")}
         </h2>
 
         {(filters.tags.size > 0 || filters.year) && (
@@ -66,7 +68,7 @@ export function PostFilters() {
             <Calendar className="size-6 text-acc-red" />
 
             <h3 className="font-medium font-unbounded text-foreground text-lg tracking-tight">
-              Years
+              {t("posts.years")}
             </h3>
           </div>
 

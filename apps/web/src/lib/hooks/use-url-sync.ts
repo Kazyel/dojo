@@ -4,12 +4,13 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 import { sanitizeInitialTags } from "@/lib/utils";
 import { usePostsStore } from "@/lib/store/use-posts-store";
 
-import type { Years } from "@/components/main/posts/post-filters";
+import type { Tags, Years } from "@/components/main/posts/post-filters";
 
 type PageSearch = {
   tags?: string;
   year?: number;
 };
+
 
 export function useURLSync() {
   const navigate = useNavigate({ from: "/" });
@@ -55,7 +56,9 @@ export function useURLSync() {
 
     const setFilters = usePostsStore.getState().setFilters;
     setFilters({
-      tags: tags ? new Set(sanitizeInitialTags(tags)) : new Set(),
+      tags: tags
+        ? (new Set(sanitizeInitialTags(tags)) as Set<Tags[number]>)
+        : new Set(),
       year: (year as Years[number]) ?? null,
     });
   }, [tags, year]);
