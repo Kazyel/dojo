@@ -1,4 +1,4 @@
-import { expect, test, describe } from "vitest";
+import { expect, test, describe, vi } from "vitest";
 
 import { screen, render } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
@@ -8,12 +8,19 @@ import { usePostsStore } from "@/lib/store/use-posts-store";
 
 import type { Tags } from "@/components/main/posts/post-filters";
 import { Paginator } from "@/components/main/paginator";
+import { I18nextProvider } from "react-i18next";
+import i18n from "@/lib/i18n/i18n";
 
 const startPaginator = (posts: Post[]) => {
   const { initializePosts } = usePostsStore.getState();
   initializePosts(posts);
 
-  const rendered = render(<Paginator />);
+  const rendered = render(
+    <I18nextProvider i18n={i18n}>
+      <Paginator />);
+    </I18nextProvider>
+  )
+
   const user = userEvent.setup();
   return {
     rendered,
@@ -25,8 +32,14 @@ const makePosts = (count: number, year = 2025): Post[] =>
   Array.from({ length: count }).map((_, i) => ({
     id: i,
     slug: `p${i}`,
-    title: `p${i}`,
-    description: "desc",
+    title: {
+      en: `p${i}`,
+      pt: `p${i}`
+    },
+    description: {
+      en: "desc",
+      pt: "desc"
+    },
     year: year,
     tags:
       i % 2 === 0

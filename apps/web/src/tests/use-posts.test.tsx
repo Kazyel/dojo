@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { describe } from "node:test";
 
 import type { Post } from "@/lib/types";
@@ -7,12 +7,19 @@ import { usePostsStore } from "@/lib/store/use-posts-store";
 
 import type { Tags } from "@/components/main/posts/post-filters";
 
+
 const makePosts = (count: number, year = 2025): Post[] =>
   Array.from({ length: count }).map((_, i) => ({
     id: i,
-    title: `p${i}`,
-    description: "desc",
     slug: `p${i}`,
+    title: {
+      en: `p${i}`,
+      pt: `p${i}`
+    },
+    description: {
+      en: "desc",
+      pt: "desc"
+    },
     year: year,
     tags:
       i % 2 === 0

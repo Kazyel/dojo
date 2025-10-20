@@ -39,9 +39,9 @@
         "^test:ci"
       ]
     },
-    "gen:tests": {
+    "gen:posts": {
       "dependsOn": [
-        "^gen:tests"
+        "^gen:posts"
       ]
     }
   }
