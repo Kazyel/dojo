@@ -20,7 +20,7 @@ export function PostFilters() {
   const isMobile = useIsMobile();
 
   return (
-    <aside className="border-foreground h-fit flex flex-col sticky col-span-1 top-4 bg-acc-gold/15 dark:bg-acc-red/5 p-6 rounded-md">
+    <aside className="border-foreground h-fit flex flex-col sticky col-span-1 top-4 bg-acc-gold/15 dark:bg-acc-red/5 p-6 rounded">
       <div
         className={cn(
           `flex items-center justify-between mb-4`,
