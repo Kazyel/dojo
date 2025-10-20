@@ -1,50 +1,37 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { posts } from "@/lib/posts";
 
 import { NotFound } from "@/components/main/not-found";
 
 type PostModule = {
-  default: React.ComponentType;
+  default: React.ComponentType
 };
 
-const POST_MODULES = import.meta.glob<PostModule>("@/lib/content/*/*.mdx");
+export const loadPost = async (postName: string, language = "en") => {
+  const key = `${language}:${postName}`;
+  const loader = posts[key];
 
-const createPostModuleMap = () => {
-  return Object.fromEntries(
-    Object.entries(POST_MODULES)
-      .map(([path, loader]) => {
-        const match = path.match(/\/([^/]+)\/([^/]+)\.mdx$/);
+  if (!loader) {
+    const fallbackKey = `en:${postName}`;
+    if (!posts[fallbackKey]) return null;
+    return posts[fallbackKey]();
+  }
 
-        if (match) {
-          const [, language, postName] = match;
-          return [`${language}:${postName}`, loader];
-        }
-
-        return null;
-      })
-      .filter(Boolean) as [string, () => Promise<PostModule>][]
-  );
-};
-
-const POST_MODULE_MAP = createPostModuleMap();
-
-const loadContent = (postName: string, language = "en") => {
-  return POST_MODULE_MAP[`${language}:${postName}`];
+  return loader();
 };
 
 export const Route = createFileRoute("/p/$postName")({
-  loader: async ({ params, context }) => {
-    const importFn = loadContent(params.postName, context.language);
-    if (!importFn) {
-      throw notFound();
-    }
-    return await importFn();
-  },
   component: RouteComponent,
-  notFoundComponent: () => <NotFound isPost={true} />,
+  notFoundComponent: () => <NotFound isPost />,
+  loader: ({ params, context }) => {
+    const module = loadPost(params.postName, context.language);
+    if (!module) throw notFound();
+    return module;
+  },
 });
 
 function RouteComponent() {
-  const postModule = Route.useLoaderData();
+  const postModule: PostModule = Route.useLoaderData();
   const PostComponent = postModule.default;
 
   return (
