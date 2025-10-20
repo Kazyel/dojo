@@ -1,8 +1,10 @@
 import { expect, test, describe, vi } from "vitest";
-import { screen, render } from "@testing-library/react";
+import { screen, render, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 
 import { LanguageMenu } from "@/components/main/navbar/language-menu";
+import { I18nextProvider } from "react-i18next";
+import i18n from "@/lib/i18n/i18n";
 
 vi.mock("@tanstack/react-router", () => ({
   useRouter: () => ({
@@ -11,7 +13,12 @@ vi.mock("@tanstack/react-router", () => ({
 }));
 
 const startLanguageMenu = () => {
-  const renderResult = render(<LanguageMenu />);
+  const renderResult = render(
+    <I18nextProvider i18n={i18n}>
+      <LanguageMenu />
+    </I18nextProvider>
+  );
+
   const user = userEvent.setup();
   return {
     renderResult,
@@ -28,7 +35,9 @@ describe("LanguageMenu Component", () => {
     expect(screen.getByRole("list")).toBeInTheDocument();
 
     await user.click(menuBtn);
-    expect(screen.queryByRole("list")).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByRole("list")).not.toBeInTheDocument();
+    });
   });
 
   test("Selects a language and updates localStorage", async () => {
