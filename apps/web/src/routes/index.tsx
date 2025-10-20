@@ -4,10 +4,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
 import type { Post } from "@/lib/types";
-import postsJson from "@/lib/content/posts.json";
 import { useURLSync } from "@/lib/hooks/use-url-sync";
 import { usePostsStore } from "@/lib/store/use-posts-store";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
+import postsJson from "@/lib/content/posts.json";
 
 import { PostCard } from "@/components/main/posts/post-card";
 import { PostFilters } from "@/components/main/posts/post-filters";
@@ -38,13 +38,13 @@ function HomeComponent() {
 
   return (
     <main className="mx-auto max-w-5xl px-8 py-6 font-merriweather">
-      <section className="mt-0 sm:mt-6 space-y-10">
+      <section className="mt-0 sm:mt-6 space-y-14">
         <div className="space-y-4 rounded">
-          <p className="text-base sm:text-xl text-muted-foreground text-pretty tracking-wide font-light">
+          <p className="text-base sm:text-xl text-muted-foreground text-pretty tracking-wide">
             {t("home.my_corner")}
           </p>
 
-          <p className="text-base sm:text-xl text-muted-foreground text-pretty tracking-wide font-light">
+          <p className="text-base sm:text-xl text-muted-foreground text-pretty tracking-wide">
             {t("home.greeting")}
           </p>
         </div>
@@ -54,11 +54,12 @@ function HomeComponent() {
 
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative">
         <div className="flex items-center justify-center gap-5 flex-wrap col-span-1 sm:col-span-2 lg:col-span-2 lg:justify-start">
-          {postsData.current.length === 0 || !currentPosts && (
-            <p className="font-semibold text-lg text-foreground py-10 mx-auto">
-              {t("posts.no_posts_found")}
-            </p>
-          )}
+          {postsData.current.length === 0 ||
+            (!currentPosts && (
+              <p className="font-semibold text-lg text-foreground py-10 mx-auto">
+                {t("posts.no_posts_found")}
+              </p>
+            ))}
 
           {paginatedPosts.map((post, index) => {
             return <PostCard post={post} index={index} key={index} />;

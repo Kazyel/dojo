@@ -7,18 +7,17 @@ import { usePostsStore } from "@/lib/store/use-posts-store";
 
 import type { Tags } from "@/components/main/posts/post-filters";
 
-
 const makePosts = (count: number, year = 2025): Post[] =>
   Array.from({ length: count }).map((_, i) => ({
     id: i,
     slug: `p${i}`,
     title: {
       en: `p${i}`,
-      pt: `p${i}`
+      pt: `p${i}`,
     },
     description: {
       en: "desc",
-      pt: "desc"
+      pt: "desc",
     },
     year: year,
     tags:

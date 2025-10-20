@@ -5,8 +5,8 @@ import { routeTree } from "@/routeTree.gen";
 import Loader from "@/components/main/loader";
 import { NotFound } from "@/components/main/not-found";
 
-import "@/lib/i18n/i18n.ts";
-import "@/index.css"
+import "@/lib/i18n/i18n";
+import "@/index.css";
 
 const router = createRouter({
   routeTree,
