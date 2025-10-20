@@ -1,10 +1,13 @@
-// THIS FILE IS AUTO-GENERATED
-import type { Posts } from "@/lib/types";
 
-import Post0 from "./content/en/why-i-started-this-blog.mdx";
-import Post1 from "./content/pt/why-i-started-this-blog.mdx";
+//AUTO GENERATED FILE - DO NOT EDIT
+
+export type Posts = {
+  [key: string]: () => Promise<{
+    default: React.ComponentType<any>;
+  }>;
+}
 
 export const posts: Posts = {
-  "en:why-i-started-this-blog": async () => ({ default: Post0 }),
-  "pt:why-i-started-this-blog": async () => ({ default: Post1 }),
+  "en:why-i-started-this-blog": () => import("./content/en/why-i-started-this-blog.mdx"),
+  "pt:why-i-started-this-blog": () => import("./content/pt/why-i-started-this-blog.mdx")
 };

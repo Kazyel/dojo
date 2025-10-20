@@ -27,7 +27,7 @@ export const Route = createFileRoute("/p/$postName")({
     const module = await loadPost(params.postName, context.language);
     if (!module) throw notFound();
     return module;
-  }
+  },
 });
 
 function RouteComponent() {
