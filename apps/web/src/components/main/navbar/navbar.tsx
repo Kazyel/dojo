@@ -9,7 +9,6 @@ import { ThemeChanger } from "@/components/main/navbar/theme-changer";
 
 export function Navbar() {
   const [showNavbar, setShowNavbar] = useState(true);
-
   const navRef = useRef<HTMLElement | null>(null);
 
   useOnScroll((bool) => setShowNavbar(bool!));

@@ -1,6 +1,6 @@
-import { MoonIcon, SunIcon } from "lucide-react";
-import { motion } from "motion/react"
 import { useTheme } from "next-themes";
+import { motion } from "motion/react"
+import { MoonIcon, SunIcon } from "lucide-react";
 
 export function ThemeChanger() {
   const { theme, setTheme } = useTheme();

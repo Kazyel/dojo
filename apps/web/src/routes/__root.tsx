@@ -45,7 +45,6 @@ function RootComponent() {
   return (
     <>
       <HeadContent />
-
       <ThemeProvider
         attribute="class"
         defaultTheme="dark"
@@ -55,10 +54,8 @@ function RootComponent() {
         <Navbar />
         <Outlet />
         <Footer />
-
         <Toaster richColors />
       </ThemeProvider>
-
       <TanStackRouterDevtools position="bottom-left" />
     </>
   );
