@@ -42,7 +42,7 @@ export const useMDXComponents = () => {
     p(properties: MDXProps) {
       return (
         <p
-          className="text-foreground/75 text-base md:text-lg "
+          className="text-foreground/85 text-base md:text-lg "
           {...properties}
         />
       );

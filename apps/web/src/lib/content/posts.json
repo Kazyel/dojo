@@ -1,10 +1,19 @@
 [
   {
     "id": 1,
-    "title": "Why I started this blog",
-    "description": "I talk about the motivation behind starting this blog and what I hope to achieve with it.",
+    "title": {
+      "pt": "Por que comecei este blog",
+      "en": "Why I started this blog"
+    },
+    "description": {
+      "pt": "Neste post, compartilho as razões pelas quais decidi iniciar este blog e o que espero alcançar com ele.",
+      "en": "In this post, I share the reasons why I decided to start this blog and what I hope to achieve with it."
+    },
     "slug": "why-i-started-this-blog",
-    "tags": ["random talk", "thoughts"],
+    "tags": [
+      "random talk",
+      "thoughts"
+    ],
     "year": 2025
   }
 ]

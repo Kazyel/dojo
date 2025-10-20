@@ -7,10 +7,11 @@ import { cn } from "@/lib/utils";
 import { SUPPORTED_LANGUAGES } from "@/lib/utils";
 import { useClickOutside } from "@/lib/hooks/use-click-outside";
 import { useOnScroll } from "@/lib/hooks/use-on-scroll";
+import { useRouter } from "@tanstack/react-router";
 
 export function LanguageMenu() {
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
-
+  const router = useRouter();
   const { i18n } = useTranslation();
 
   useOnScroll(() => setShowLanguageMenu(false));
@@ -18,6 +19,15 @@ export function LanguageMenu() {
   const ref = useClickOutside<HTMLDivElement>(() => {
     setShowLanguageMenu(false);
   });
+
+  const changeLanguage = (languageCode: string) => {
+    if (localStorage.getItem("preferred-language")) {
+      localStorage.setItem("preferred-language", languageCode);
+    }
+
+    i18n.changeLanguage(languageCode);
+    router.invalidate();
+  }
 
   return (
     <div className="relative inline-block" ref={ref}>
@@ -52,7 +62,7 @@ export function LanguageMenu() {
                     "disabled:font-bold disabled:bg-foreground/5 disabled:pointer-events-none"
                   )}
                   onClick={() => {
-                    i18n.changeLanguage(code);
+                    changeLanguage(code);
                     setShowLanguageMenu(false);
                   }}
                   disabled={i18n.resolvedLanguage === code}
