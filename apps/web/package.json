@@ -10,7 +10,8 @@
     "start": "vite",
     "check-types": "tsc --noEmit",
     "test": "vitest run --watch",
-    "test:ci": "vitest run"
+    "test:ci": "vitest run",
+    "gen:posts": "bun run src/lib/scripts/generate-posts.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
