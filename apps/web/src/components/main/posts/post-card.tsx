@@ -24,7 +24,7 @@ export function PostCard({ post, index }: PostCardProps) {
       exit={{ opacity: 0, transition: { duration: 0.1 } }}
 
       className={cn(
-        "group rounded-md bg-foreground px-4 py-5 w-full hover:bg-foreground/85 transition-colors duration-150",
+        "group rounded bg-foreground px-4 py-5 w-full hover:bg-foreground/85 transition-colors duration-150",
         "sm:w-[275px] sm:h-[300px] md:w-[300px] md:h-[350px]"
       )}
     >

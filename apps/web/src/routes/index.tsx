@@ -39,11 +39,7 @@ function HomeComponent() {
   return (
     <main className="mx-auto max-w-5xl px-8 py-6 font-merriweather">
       <section className="mt-0 sm:mt-6 space-y-10">
-        <div className="space-y-4 bg-foreground/5 p-6 rounded-md">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-foreground font-unbounded tracking-tighter">
-            {t("home.welcome_heading")}
-          </h2>
-
+        <div className="space-y-4 rounded">
           <p className="text-base sm:text-xl text-muted-foreground text-pretty tracking-wide font-light">
             {t("home.my_corner")}
           </p>

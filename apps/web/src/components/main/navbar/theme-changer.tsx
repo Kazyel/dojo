@@ -5,6 +5,16 @@ import { MoonIcon, SunIcon } from "lucide-react";
 export function ThemeChanger() {
   const { theme, setTheme } = useTheme();
 
+  const updateTheme = () => {
+    if (!document.startViewTransition) {
+      setTheme((prev) => (prev === "light" ? "dark" : "light"))
+      return
+    }
+
+    document.startViewTransition(() => setTheme((prev) => (prev === "light" ? "dark" : "light")))
+  }
+
+
   return (
     <motion.button
       animate={{ scale: 1 }}
@@ -15,9 +25,7 @@ export function ThemeChanger() {
         damping: 20,
       }}
       className="will-change-transform"
-      onClick={() =>
-        setTheme((prev) => (prev === "light" ? "dark" : "light"))
-      }
+      onClick={updateTheme}
     >
       {theme === "dark" ? (
         <MoonIcon className="size-5 md:size-6 text-foreground cursor-pointer mx-auto inline shrink-0" />
