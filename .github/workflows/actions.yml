@@ -31,17 +31,3 @@ jobs:
 
       - name: Run tests
         run: bun run test-ci
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    steps:
-      - name: Deploy to Production
-        run: |
-          echo "Deploying application..."
-
-      - name: notify vercel
-        uses: vercel/repository-dispatch/actions/status@v1
-        with:
-          name: "Vercel - my-nook-web: test"
