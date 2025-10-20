@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { posts } from "@/lib/posts";
+import { posts } from "@/lib/posts.generated";
 
 import { NotFound } from "@/components/main/not-found";
 
@@ -23,11 +23,11 @@ export const loadPost = async (postName: string, language = "en") => {
 export const Route = createFileRoute("/p/$postName")({
   component: RouteComponent,
   notFoundComponent: () => <NotFound isPost />,
-  loader: ({ params, context }) => {
-    const module = loadPost(params.postName, context.language);
+  loader: async ({ params, context }) => {
+    const module = await loadPost(params.postName, context.language);
     if (!module) throw notFound();
     return module;
-  },
+  }
 });
 
 function RouteComponent() {

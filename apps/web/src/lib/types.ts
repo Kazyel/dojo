@@ -14,3 +14,9 @@ export type Post = {
   year: number;
   tags: Tags[number][];
 };
+
+export type Posts = {
+  [key: string]: () => Promise<{
+    default: React.ComponentType<any>;
+  }>;
+}
