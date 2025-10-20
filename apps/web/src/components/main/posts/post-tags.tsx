@@ -33,8 +33,7 @@ export function PostTag({ type, tag }: PostTagsProps) {
         "bg-acc-gold/40 dark:text-red-200 dark:bg-acc-red/15",
         "hover:bg-acc-gold/70 dark:hover:bg-acc-red/35 transition-all duration-100",
 
-        isSelected() &&
-          "bg-acc-gold/70 hover:bg-acc-gold/40 dark:bg-acc-red/35 dark:hover:bg-acc-red/15 font-semibold"
+        isSelected() && "bg-acc-gold/70 dark:bg-acc-red/35 font-semibold"
       )}
       onClick={() => {
         if (isTag) {

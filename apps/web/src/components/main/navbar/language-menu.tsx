@@ -23,11 +23,13 @@ export function LanguageMenu() {
   const changeLanguage = (languageCode: string) => {
     if (localStorage.getItem("preferred-language")) {
       localStorage.setItem("preferred-language", languageCode);
+    } else {
+      localStorage.setItem("preferred-language", languageCode);
     }
 
     i18n.changeLanguage(languageCode);
     router.invalidate();
-  }
+  };
 
   return (
     <div className="relative inline-block" ref={ref}>
@@ -52,8 +54,8 @@ export function LanguageMenu() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.15 }}
             exit={{ opacity: 0 }}
-            className="absolute -right-8 xl:left-0 mt-5 w-36 bg-popover border border-foreground/5 rounded shadow-sm z-50 overflow-hidden">
-
+            className="absolute -right-8 xl:left-0 mt-5 w-36 bg-popover border border-foreground/5 rounded shadow-sm z-50 overflow-hidden"
+          >
             {SUPPORTED_LANGUAGES.map(({ code, name, icon: Icon }) => (
               <li key={code}>
                 <button
